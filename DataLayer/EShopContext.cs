@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace DataLayer
 {
-    public class EStoreContext : DbContext
+    public class EShopContext : DbContext
     {
         public DbSet<Customer> Customers { get; set; }
         public DbSet<Order> Orders { get; set; }
@@ -19,7 +19,7 @@ namespace DataLayer
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             optionsBuilder
-                .UseSqlServer("Server = (localdb)\\mssqllocaldb; Database = EStore; Trusted_Connection = True; ");
+                .UseSqlServer("Server = (localdb)\\mssqllocaldb; Database = EShop; Trusted_Connection = True; ");
         }
     }
 }
