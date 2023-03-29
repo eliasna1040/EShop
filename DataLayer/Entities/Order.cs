@@ -15,6 +15,8 @@ namespace DataLayer.Entities
         public DateTime PurchaseDate { get; set; } = DateTime.Now;
         [Required]
         public int CustomerId { get; set; }
+        [Required]
+        public bool Disabled { get; set; }
 
         public Customer Customer { get; set; }
         public ICollection<Product> Products { get; set; }

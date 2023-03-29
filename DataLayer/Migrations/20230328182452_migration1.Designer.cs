@@ -4,6 +4,7 @@ using DataLayer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DataLayer.Migrations
 {
     [DbContext(typeof(EShopContext))]
-    partial class EShopContextModelSnapshot : ModelSnapshot
+    [Migration("20230328182452_migration1")]
+    partial class migration1
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -82,7 +85,13 @@ namespace DataLayer.Migrations
                         .IsRequired()
                         .HasColumnType("varbinary(max)");
 
+                    b.Property<int>("ProductId")
+                        .HasColumnType("int");
+
                     b.HasKey("ImageId");
+
+                    b.HasIndex("ProductId")
+                        .IsUnique();
 
                     b.ToTable("Images");
                 });
@@ -149,9 +158,6 @@ namespace DataLayer.Migrations
                     b.Property<bool>("Disabled")
                         .HasColumnType("bit");
 
-                    b.Property<int?>("ImageId")
-                        .HasColumnType("int");
-
                     b.Property<int>("ManufacturerId")
                         .HasColumnType("int");
 
@@ -165,10 +171,6 @@ namespace DataLayer.Migrations
                     b.HasKey("ProductId");
 
                     b.HasIndex("CategoryId");
-
-                    b.HasIndex("ImageId")
-                        .IsUnique()
-                        .HasFilter("[ImageId] IS NOT NULL");
 
                     b.HasIndex("ManufacturerId");
 
@@ -190,6 +192,17 @@ namespace DataLayer.Migrations
                     b.ToTable("OrderProduct");
                 });
 
+            modelBuilder.Entity("DataLayer.Entities.Image", b =>
+                {
+                    b.HasOne("DataLayer.Entities.Product", "Product")
+                        .WithOne("Image")
+                        .HasForeignKey("DataLayer.Entities.Image", "ProductId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Product");
+                });
+
             modelBuilder.Entity("DataLayer.Entities.Order", b =>
                 {
                     b.HasOne("DataLayer.Entities.Customer", "Customer")
@@ -209,10 +222,6 @@ namespace DataLayer.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("DataLayer.Entities.Image", "Image")
-                        .WithOne("Product")
-                        .HasForeignKey("DataLayer.Entities.Product", "ImageId");
-
                     b.HasOne("DataLayer.Entities.Manufacturer", "Manufacturer")
                         .WithMany("Products")
                         .HasForeignKey("ManufacturerId")
@@ -220,8 +229,6 @@ namespace DataLayer.Migrations
                         .IsRequired();
 
                     b.Navigation("Category");
-
-                    b.Navigation("Image");
 
                     b.Navigation("Manufacturer");
                 });
@@ -251,15 +258,15 @@ namespace DataLayer.Migrations
                     b.Navigation("Orders");
                 });
 
-            modelBuilder.Entity("DataLayer.Entities.Image", b =>
-                {
-                    b.Navigation("Product")
-                        .IsRequired();
-                });
-
             modelBuilder.Entity("DataLayer.Entities.Manufacturer", b =>
                 {
                     b.Navigation("Products");
+                });
+
+            modelBuilder.Entity("DataLayer.Entities.Product", b =>
+                {
+                    b.Navigation("Image")
+                        .IsRequired();
                 });
 #pragma warning restore 612, 618
         }

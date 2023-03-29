@@ -13,6 +13,8 @@ namespace DataLayer.Entities
         public int ManufacturerId { get; set; }
         [Required]
         public string Name { get; set; }
+        [Required]
+        public bool Disabled { get; set; } = false;
 
         public ICollection<Product> Products { get; set; }
     }

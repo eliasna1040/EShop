@@ -4,6 +4,7 @@ using DataLayer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DataLayer.Migrations
 {
     [DbContext(typeof(EShopContext))]
-    partial class EShopContextModelSnapshot : ModelSnapshot
+    [Migration("20230328183328_migration3")]
+    partial class migration3
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -149,7 +152,7 @@ namespace DataLayer.Migrations
                     b.Property<bool>("Disabled")
                         .HasColumnType("bit");
 
-                    b.Property<int?>("ImageId")
+                    b.Property<int>("ImageId")
                         .HasColumnType("int");
 
                     b.Property<int>("ManufacturerId")
@@ -167,8 +170,7 @@ namespace DataLayer.Migrations
                     b.HasIndex("CategoryId");
 
                     b.HasIndex("ImageId")
-                        .IsUnique()
-                        .HasFilter("[ImageId] IS NOT NULL");
+                        .IsUnique();
 
                     b.HasIndex("ManufacturerId");
 
@@ -211,7 +213,9 @@ namespace DataLayer.Migrations
 
                     b.HasOne("DataLayer.Entities.Image", "Image")
                         .WithOne("Product")
-                        .HasForeignKey("DataLayer.Entities.Product", "ImageId");
+                        .HasForeignKey("DataLayer.Entities.Product", "ImageId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("DataLayer.Entities.Manufacturer", "Manufacturer")
                         .WithMany("Products")

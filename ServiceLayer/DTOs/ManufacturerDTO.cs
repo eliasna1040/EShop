@@ -5,17 +5,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace DataLayer.Entities
+namespace ServiceLayer.DTOs
 {
-    public class Category
+    public class ManufacturerDTO
     {
-        [Required]
-        public int CategoryId { get; set; }
-        [Required]
         public string Name { get; set; }
-        [Required]
         public bool Disabled { get; set; } = false;
-
-        public ICollection<Product> Products { get; set; }
     }
 }
