@@ -1,9 +1,11 @@
 ﻿using DataLayer.Entities;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.Protocols;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection.Metadata;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -21,6 +23,20 @@ namespace DataLayer
         public EShopContext(DbContextOptions<EShopContext> options) : base(options)
         {
             
+        }
+
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder) 
+        {
+            optionsBuilder
+                .LogTo(Console.WriteLine, new[] { DbLoggerCategory.Database.Command.Name }, LogLevel.Information);
+        }
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<Category>().HasData(new Category { Name = "bil", CategoryId = 1 });
+            modelBuilder.Entity<Manufacturer>().HasData(new Manufacturer { Name = "Mercedes-Benz", ManufacturerId = 1 });
+            modelBuilder.Entity<Product>().HasData(new Product { ProductId = 1, Name = "g63 amg", CategoryId = 1, Description = "en bil", ManufacturerId = 1, Price = 2000000 });
+            modelBuilder.Entity<Customer>().HasData(new Customer { Name = "Elias", Address = "Hvor kragerne vender", CustomerId = 1, Email = "test@test.test", Password = "P@ssw0rd" });
         }
     }
 }

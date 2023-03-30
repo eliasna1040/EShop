@@ -21,7 +21,10 @@ namespace ServiceLayer.Services
 
         public void CreateOrder(OrderDTO order)
         {
-            _context.Orders.Add(new Order { Customer = order.Customer, Products = order.Products });
+            List<Product> products = new();
+            order.ProductIds.ForEach(x => products.Add(_context.Products.First(y => y.ProductId == x)));
+
+            _context.Orders.Add(new Order { CustomerId = order.CustomerId, Products = products });
             _context.SaveChanges();
         }
 
@@ -32,7 +35,7 @@ namespace ServiceLayer.Services
 
         public Order? GetOrder(int orderId)
         {
-            return _context.Orders.AsNoTracking().FirstOrDefault(x => x.OrderId == orderId);
+            return _context.Orders.Include(x => x.Products).Include(x => x.Customer).AsNoTracking().FirstOrDefault(x => x.OrderId == orderId);
         }
 
         public void DisableOrder(int orderId)

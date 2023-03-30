@@ -23,7 +23,7 @@ namespace ServiceLayer.Services
 
         public void AddProduct(ProductDTO product)
         {
-            _context.Products.Add(new Product { Name = product.Name, CategoryId = product.CategoryId, ManufacturerId = product.ManufacturerId, Price = product.Price });
+            _context.Products.Add(new Product { Name = product.Name, CategoryId = product.CategoryId, ManufacturerId = product.ManufacturerId, Price = product.Price, Description = product.Description });
             _context.SaveChanges();
         }
 
