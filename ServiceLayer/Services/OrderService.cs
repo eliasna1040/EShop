@@ -1,5 +1,6 @@
 ﻿using DataLayer;
 using DataLayer.Entities;
+using Microsoft.EntityFrameworkCore;
 using ServiceLayer.DTOs;
 using System;
 using System.Collections.Generic;
@@ -26,12 +27,12 @@ namespace ServiceLayer.Services
 
         public List<Order> GetOrders()
         {
-            return _context.Orders.OrderByDescending(x => x.OrderId).ToList();
+            return _context.Orders.OrderByDescending(x => x.OrderId).AsNoTracking().ToList();
         }
 
         public Order? GetOrder(int orderId)
         {
-            return _context.Orders.FirstOrDefault(x => x.OrderId == orderId);
+            return _context.Orders.AsNoTracking().FirstOrDefault(x => x.OrderId == orderId);
         }
 
         public void DisableOrder(int orderId)

@@ -16,6 +16,8 @@ namespace DataLayer.Entities
         [Required]
         public string Email { get; set; }
         [Required]
+        public string Password { get; set; }
+        [Required]
         public string Address { get; set; }
         [Required]
         public bool Disabled { get; set; } = false;

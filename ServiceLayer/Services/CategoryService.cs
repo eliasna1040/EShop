@@ -1,5 +1,6 @@
 ﻿using DataLayer;
 using DataLayer.Entities;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -19,7 +20,7 @@ namespace ServiceLayer.Services
 
         public List<Category> GetCategories()
         {
-            return _context.Categories.ToList();
+            return _context.Categories.AsNoTracking().ToList();
         }
 
         public void AddCategory(string category)

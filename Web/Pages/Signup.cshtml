@@ -1,0 +1,40 @@
+﻿@page
+@model Web.Pages.SignupModel
+@{
+}
+<div class="d-flex justify-content-center mt-5">
+    <form method="post" class="border rounded p-4 col-3">
+        <div class="mb-3 mt-3">
+            <label class="form-label" for="form2Example1">Navn</label>
+            <input type="text" asp-for="Name" id="form2Example1" class="form-control" />
+        </div>
+
+        <div class="mb-3 mt-3">
+            <label class="form-label" for="form2Example1">Email adresse</label>
+            <input type="email" asp-for="Email" id="form2Example1" class="form-control" />
+        </div>
+
+        <div class="mb-3 mt-3">
+            <label class="form-label" for="form2Example1">adresse</label>
+            <input type="text" asp-for="Address" id="form2Example1" class="form-control" />
+        </div>
+
+        <div class="mb-3 mt-3">
+            <label class="form-label" for="form2Example2">Password</label>
+            <input type="password" asp-for="Password" id="form2Example2" class="form-control" />
+        </div>
+
+        <div class="mb-5">
+            <label class="form-label" for="form2Example2">Confirm password</label>
+            <input type="password" asp-for="ConfirmPassword" id="form2Example2" class="form-control" />
+        </div>
+
+        <div class="text-center">
+            <button type="submit" class="btn btn-primary btn-block mb-5 col-12">Opret</button>
+        </div>
+
+        <div class="text-center">
+            <p>Allerede medlem? <a asp-page="Login">Login</a></p>
+        </div>
+    </form>
+</div>

@@ -5,13 +5,20 @@ using DataLayer;
 
 var builder = WebApplication.CreateBuilder(args);
 
+
+
 // Add services to the container.
-builder.Services.AddSingleton<ICategoryService, CategoryService>()
-            .AddSingleton<IManufacturerService, ManufacturerService>()
-            .AddSingleton<IOrderService, OrderService>()
-            .AddSingleton<IProductService, ProductService>()
-            .AddDbContext<EShopContext>()
+builder.Services.AddDbContext<EShopContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("EShopContext")))
+            .AddScoped<ICategoryService, CategoryService>()
+            .AddScoped<IManufacturerService, ManufacturerService>()
+            .AddScoped<IOrderService, OrderService>()
+            .AddScoped<IProductService, ProductService>()
+            .AddScoped<ICustomerService, CustomerService>()
+            .AddSession(options => options.IdleTimeout = TimeSpan.FromMinutes(30))
+            .AddMemoryCache()
             .AddRazorPages();
+
+builder.Services.AddMvc();
 
 var app = builder.Build();
 
@@ -25,7 +32,7 @@ if (!app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 app.UseStaticFiles();
-
+app.UseSession();
 app.UseRouting();
 
 app.UseAuthorization();

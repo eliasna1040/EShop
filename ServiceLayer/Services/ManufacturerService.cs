@@ -27,7 +27,7 @@ namespace ServiceLayer.Services
 
         public List<Manufacturer> GetManufacturers()
         {
-            return _context.Manufacturers.ToList();
+            return _context.Manufacturers.AsNoTracking().ToList();
         }
 
         public void EditManufacturer(Manufacturer newManufacturer)

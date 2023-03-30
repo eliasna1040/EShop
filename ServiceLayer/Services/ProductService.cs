@@ -27,7 +27,7 @@ namespace ServiceLayer.Services
             _context.SaveChanges();
         }
 
-        public List<Product> GetProducts(string? search, int page, int count, int? categoryId, int? manufacturerId)
+        public List<Product> GetProducts(int page, int count, string? search = null, int? categoryId = null, int? manufacturerId = null)
         {
             IQueryable<Product> query = _context.Products.Include(x => x.Manufacturer).Include(x => x.Category);
 
@@ -44,12 +44,12 @@ namespace ServiceLayer.Services
                 query = query.Where(x => x.ManufacturerId == manufacturerId);
             }
 
-            return query.Page(page, count).ToList();
+            return query.Page(page, count).AsNoTracking().ToList();
         }
 
         public Product? GetProduct(int productId)
         {
-            return _context.Products.Include(x => x.Manufacturer).Include(x => x.Category).FirstOrDefault(x => x.ProductId == productId);
+            return _context.Products.Include(x => x.Manufacturer).Include(x => x.Category).AsNoTracking().FirstOrDefault(x => x.ProductId == productId);
         }
 
         public void EditProduct(Product newProduct)

@@ -1,5 +1,6 @@
 ﻿using DataLayer.Entities;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Protocols;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -17,10 +18,9 @@ namespace DataLayer
         public DbSet<Manufacturer> Manufacturers { get; set; }
         public DbSet<Image> Images { get; set; }
 
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        public EShopContext(DbContextOptions<EShopContext> options) : base(options)
         {
-            optionsBuilder
-                .UseSqlServer("Server = (localdb)\\mssqllocaldb; Database = EShop; Trusted_Connection = True; ");
+            
         }
     }
 }

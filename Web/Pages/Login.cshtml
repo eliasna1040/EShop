@@ -1,0 +1,29 @@
+﻿@page
+@model Web.Pages.LoginModel
+@{
+}
+<div class="d-flex justify-content-center mt-5">
+    <form method="post" class="border rounded p-4 col-3">
+        <!-- Email input -->
+        <div class="mb-3 mt-3">
+            <label class="form-label" for="form2Example1">Email address</label>
+            <input type="email" asp-for="Email" id="form2Example1" class="form-control" />
+        </div>
+
+        <!-- Password input -->
+        <div class="mb-5">
+            <label class="form-label" for="form2Example2">Password</label>
+            <input type="password" asp-for="Password" id="form2Example2" class="form-control" />
+        </div>
+
+        <!-- Submit button -->
+        <div class="text-center">
+            <button type="submit" class="btn btn-primary btn-block mb-5 col-12">Sign in</button>
+        </div>
+
+        <!-- Register buttons -->
+        <div class="text-center">
+            <p>Ikke medlem? <a asp-page="Signup">Registrer</a></p>
+        </div>
+    </form>
+</div>
