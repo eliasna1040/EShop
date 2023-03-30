@@ -59,7 +59,7 @@ namespace ServiceLayer.Services
                 return;
 
             product = newProduct;
-            _context.Entry(product).State = EntityState.Modified;
+            _context.Products.Update(product);
 
             _context.SaveChanges();
         }
