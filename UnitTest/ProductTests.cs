@@ -74,13 +74,17 @@ namespace UnitTest
         [Fact]
         public void UpdateTest()
         {
+            Product product;
             using (var context = ContextCreater.CreateContext())
             {
-                Product product = new Product { Name = "G63 AMG", Description = "det er en bil", Price = 2500000, Category = new Category { Name = "Bil" }, Manufacturer = new Manufacturer { Name = "Mercedes-Benz" } };
-                context.Products.Add(product);
+                context.Products.Add(new Product { Name = "G63 AMG", Description = "det er en bil", Price = 2500000, Category = new Category { Name = "Bil" }, Manufacturer = new Manufacturer { Name = "Mercedes-Benz" } });
                 context.SaveChanges();
+            }
 
+            using (var context = ContextCreater.CreateContext())
+            {
                 ProductService productService = new(context);
+                product = productService.GetProduct(1);
                 product.Name = "EQS";
                 productService.EditProduct(product);
             }
@@ -88,7 +92,7 @@ namespace UnitTest
             using (var context = ContextCreater.CreateContext())
             {
                 ProductService productService = new(context);
-                Product? product = productService.GetProduct(1);
+                product = productService.GetProduct(1);
                 Assert.Equal("EQS", product.Name);
             }
         }
