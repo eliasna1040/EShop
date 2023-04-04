@@ -18,9 +18,15 @@ namespace Web.Pages
             _productService = productService;
         }
 
-        public void OnGet()
+        public void OnGet(string? search = null, int? categoryId = null)
         {
-            Products = _productService.GetProducts(0, 20);
+            Products = _productService.GetProducts(1, 20, search, categoryId);
+        }
+
+        public IActionResult OnPostAddProduct(int productId)
+        {
+            Response.Cookies.Append("Products", $"{Request.Cookies["Products"]},{productId}", new CookieOptions() { Expires = DateTime.Now.AddDays(30)});
+            return RedirectToPage();
         }
     }
 }

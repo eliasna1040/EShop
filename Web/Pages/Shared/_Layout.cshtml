@@ -11,7 +11,7 @@
 </head>
 <body>
     <header>
-        <nav class="navbar mb-3">
+        <nav class="navbar mb-3 border-dark border-bottom">
             <div class="col-3">
                 <button class="btn" data-bs-toggle="offcanvas" data-bs-target="#category"><i class="bi bi-list h4"></i></button>
             </div>
@@ -24,8 +24,8 @@
                     @await Component.InvokeAsync("Categories")
                 </div>
             </div>
-            <a class="col-3">EShop</a>
-            <input class="col-3" type="text" placeholder="Søg" />
+            <a asp-page="Index" class="col-3">EShop</a>
+            <input class="col-3" type="search" placeholder="Søg" />
             <div class="col-3 text-end">
                 <div class="btn-group">
                     <button type="button" class="btn dropdown-toggle" data-bs-toggle="dropdown"><i class="bi bi-basket2-fill h4"></i></button>
