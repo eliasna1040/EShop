@@ -6,6 +6,8 @@ using Newtonsoft.Json;
 using Web.JsonObjects;
 using Web.Models;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using System.ComponentModel.DataAnnotations;
+using ServiceLayer.Enums;
 
 namespace Web.Pages
 {
@@ -24,6 +26,9 @@ namespace Web.Pages
         [BindProperty(SupportsGet = true)]
         public int? CategoryId { get; set; }
 
+        [BindProperty(SupportsGet = true)]
+        public OrderByEnum OrderBy { get; set; }
+
 
         private readonly ILogger<IndexModel> _logger;
         private readonly IProductService _productService;
@@ -36,7 +41,7 @@ namespace Web.Pages
             _manufacturerService = manufacturerService;
         }
 
-        public void OnGet(string? search = null, int? categoryId = null, int[]? manufacturerIds = null)
+        public void OnGet(string? search = null, int? categoryId = null, int[]? manufacturerIds = null, OrderByEnum? orderBy = OrderByEnum.NameAsc)
         {
             Search = search;
             CategoryId = categoryId;
@@ -64,7 +69,7 @@ namespace Web.Pages
 
         public IActionResult OnPostSearch()
         {
-            return RedirectToPage("Index", new { search = Search, manufacturerIds = ManufacturerIds, categoryId = CategoryId });
+            return RedirectToPage("Index", new { search = Search, manufacturerIds = ManufacturerIds, categoryId = CategoryId, orderBy = OrderBy });
         }
     }
 }

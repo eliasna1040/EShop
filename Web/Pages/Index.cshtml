@@ -6,9 +6,9 @@
 
 <div class="d-flex justify-content-center margin-top-150px row gx-5">
     <div class="col-2 border">
-        <h5 class="my-3">Filter</h5>
         <form method="post" asp-page-handler="Search">
             <div class="d-flex flex-column">
+                <h5 class="my-3">Filter</h5>
                 @foreach (var item in Model.ManufacturersFilter)
                 {
                     <div class="d-flex justify-content-between">
@@ -16,9 +16,11 @@
                         <input type="checkbox" name="ManufacturerIds" class="form-check-input" value="@item.Value" checked="@item.Selected" />
                     </div>
                 }
+                <h5 class="my-3">Sortering</h5>
+                <select class="form-select-sm" asp-for="OrderBy" asp-items="Html.GetEnumSelectList<ServiceLayer.Enums.OrderByEnum>()"></select>
                 <input type="hidden" asp-for="Search" value="@Model.Search" />
                 <input type="hidden" asp-for="CategoryId" value="@Model.CategoryId" />
-                <input value="Søg" class="btn btn-success mt-3" type="submit" />
+                <input value="Søg" class="btn btn-success my-3" type="submit" />
             </div>
         </form>
     </div>

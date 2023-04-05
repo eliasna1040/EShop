@@ -2,6 +2,7 @@
 using DataLayer.Entities;
 using Microsoft.EntityFrameworkCore;
 using ServiceLayer.DTOs;
+using ServiceLayer.Enums;
 using ServiceLayer.ExtensionMethods;
 using System;
 using System.Collections.Generic;
@@ -27,7 +28,7 @@ namespace ServiceLayer.Services
             _context.SaveChanges();
         }
 
-        public List<Product> GetProducts(int page, int count, string? search = null, int? categoryId = null, int[]? manufacturerIds = null)
+        public List<Product> GetProducts(int page, int count, string? search = null, int? categoryId = null, int[]? manufacturerIds = null, OrderByEnum? orderBy = OrderByEnum.NameAsc)
         {
             IQueryable<Product> query = _context.Products.Include(x => x.Manufacturer).Include(x => x.Category).Include(x => x.Image);
 
@@ -42,6 +43,22 @@ namespace ServiceLayer.Services
             if (manufacturerIds != null && manufacturerIds.Any())
             {
                 query = query.Where(x => manufacturerIds.Contains(x.ManufacturerId));
+            }
+
+            switch (orderBy)
+            {
+                case OrderByEnum.NameAsc:
+                    query = query.OrderBy(x => x.Name);
+                    break;
+                case OrderByEnum.NameDesc:
+                    query = query.OrderByDescending(x => x.Name);
+                    break;
+                case OrderByEnum.PriceAsc:
+                    query = query.OrderBy(x => x.Price);
+                    break;
+                case OrderByEnum.PriceDesc:
+                    query = query.OrderByDescending(x => x.Price);
+                    break;
             }
 
             return query.Page(page, count).AsNoTracking().ToList();
