@@ -30,6 +30,15 @@ namespace ServiceLayer.Services
             return _context.Manufacturers.AsNoTracking().ToList();
         }
 
+        public List<Manufacturer> GetManufacturersFromSearch(string? search)
+        {
+            return string.IsNullOrWhiteSpace(search) ? GetManufacturers() : _context.Products.Where(p => p.Name.ToLower().Contains(search.ToLower()) || p.Manufacturer.Name.ToLower().Contains(search.ToLower()))
+                                                                                             .Include(x => x.Manufacturer)
+                                                                                             .Select(x => x.Manufacturer)
+                                                                                             .AsNoTracking()
+                                                                                             .ToList();
+        }
+
         public void EditManufacturer(Manufacturer newManufacturer)
         {
             Manufacturer? manufacturer = _context.Manufacturers.AsNoTracking().FirstOrDefault(x => x.ManufacturerId == newManufacturer.ManufacturerId);

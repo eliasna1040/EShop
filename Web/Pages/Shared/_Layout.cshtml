@@ -25,7 +25,10 @@
                 </div>
             </div>
             <a asp-page="Index" class="col-3">EShop</a>
-            <input class="col-3" type="search" placeholder="Søg" />
+            <form method="post" asp-page="Index" asp-page-handler="Search">
+                <input type="search" name="search" />
+                <input type="submit" />
+            </form>
             <div class="col-3 text-end">
                 <div class="btn-group">
                     <button type="button" class="btn dropdown-toggle" data-bs-toggle="dropdown"><i class="bi bi-basket2-fill h4"></i></button>

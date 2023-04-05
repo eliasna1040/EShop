@@ -9,6 +9,6 @@ namespace ServiceLayer.Services
         void DisableProduct(int productId);
         void EditProduct(Product newProduct);
         Product? GetProduct(int productId);
-        List<Product> GetProducts(int page, int count, string? search = null, int? categoryId = null, int? manufacturerId = null);
+        List<Product> GetProducts(int page, int count, string? search = null, int? categoryId = null, int[]? manufacturerIds = null);
     }
 }

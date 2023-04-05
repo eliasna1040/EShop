@@ -9,6 +9,11 @@
 <ul class="dropdown-menu dropdown-menu-end">
     @foreach (var product in Model)
     {
-        <li><p>@product.Name</p></li>
+        <li class="d-flex justify-content-between">
+            <p>@product.Name</p>
+            <p>@product.Price.ToString("C2")</p>
+        </li>
     }
+    <li>Total: @Model.Sum(x => x.Price).ToString("C2")</li>
+    <li><a class="btn btn-success" asp-page="Basket">Gå til kurv</a></li>
 </ul>

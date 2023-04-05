@@ -9,5 +9,6 @@ namespace ServiceLayer.Services
         void DisableManufacturer(int manufaturerId);
         void EditManufacturer(Manufacturer newManufacturer);
         List<Manufacturer> GetManufacturers();
+        List<Manufacturer> GetManufacturersFromSearch(string? search);
     }
 }

@@ -1,38 +1,35 @@
-﻿using DataLayer.Entities;
+using DataLayer.Entities;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.RazorPages;
 using Newtonsoft.Json;
 using ServiceLayer.Services;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Web.JsonObjects;
 
-namespace Web.ViewComponents
+namespace Web.Pages
 {
-    public class BasketViewComponent : ViewComponent
+    public class BasketModel : PageModel
     {
+        public List<Product> Products { get; set; } = new List<Product>();
+
+        private readonly ILogger<BasketModel> _logger;
         private readonly IProductService _productService;
 
-        public BasketViewComponent(IProductService productService)
+        public BasketModel(ILogger<BasketModel> logger, IProductService productService)
         {
+            _logger = logger;
             _productService = productService;
         }
 
-        public async Task<IViewComponentResult> InvokeAsync()
+        public void OnGet()
         {
-            List<Product> products = new();
             string? cookie = HttpContext.Request.Cookies["Products"];
             if (cookie != null)
             {
                 foreach (BasketJson item in JsonConvert.DeserializeObject<List<BasketJson>>(cookie))
                 {
-                    products.Add(_productService.GetProduct(item.ProductId));
+                    Products.Add(_productService.GetProduct(item.ProductId));
                 }
             }
-
-            return View(products);
         }
     }
 }

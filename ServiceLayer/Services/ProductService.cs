@@ -27,9 +27,9 @@ namespace ServiceLayer.Services
             _context.SaveChanges();
         }
 
-        public List<Product> GetProducts(int page, int count, string? search = null, int? categoryId = null, int? manufacturerId = null)
+        public List<Product> GetProducts(int page, int count, string? search = null, int? categoryId = null, int[]? manufacturerIds = null)
         {
-            IQueryable<Product> query = _context.Products.Include(x => x.Manufacturer).Include(x => x.Category);
+            IQueryable<Product> query = _context.Products.Include(x => x.Manufacturer).Include(x => x.Category).Include(x => x.Image);
 
             if (!string.IsNullOrWhiteSpace(search))
             {
@@ -39,9 +39,9 @@ namespace ServiceLayer.Services
             {
                 query = query.Where(x => x.CategoryId == categoryId);
             }
-            if (manufacturerId != null)
+            if (manufacturerIds != null && manufacturerIds.Any())
             {
-                query = query.Where(x => x.ManufacturerId == manufacturerId);
+                query = query.Where(x => manufacturerIds.Contains(x.ManufacturerId));
             }
 
             return query.Page(page, count).AsNoTracking().ToList();

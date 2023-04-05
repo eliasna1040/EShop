@@ -4,14 +4,35 @@
     ViewData["Title"] = "Home page";
 }
 
-<div class="d-flex justify-content-center margin-top-150px">
+<div class="d-flex justify-content-center margin-top-150px row gx-5">
+    <div class="col-2 border">
+        <h5 class="my-3">Filter</h5>
+        <form method="post" asp-page-handler="Search">
+            <div class="d-flex flex-column">
+                @foreach (var item in Model.ManufacturersFilter)
+                {
+                    <div class="d-flex justify-content-between">
+                        <p>@item.Text</p>
+                        <input type="checkbox" name="ManufacturerIds" class="form-check-input" value="@item.Value" checked="@item.Selected" />
+                    </div>
+                }
+                <input type="hidden" asp-for="Search" value="@Model.Search" />
+                <input type="hidden" asp-for="CategoryId" value="@Model.CategoryId" />
+                <input value="Søg" class="btn btn-success mt-3" type="submit" />
+            </div>
+        </form>
+    </div>
     <div class="col-8">
+        @if (!string.IsNullOrWhiteSpace(Model.Search))
+        {
+            <p>Søgeresultater for "@Model.Search"</p>
+        }
         @foreach (var product in Model.Products)
         {
             <div class="card">
                 <div class="card-body">
-                    <div class="d-inline-block">
-                        <img src="" class="card-img bg-secondary" />
+                    <div class="d-inline-block me-3">
+                        <img src="@(product.Image?.ImageData != null ? $"data:image/png;base64, {Convert.ToBase64String(product.Image.ImageData)}" : "/Images/image-not-found-icon.svg")" height="100" class="card-img" />
                     </div>
                     <div class="d-inline-block">
                         <h5>@product.Name</h5>
