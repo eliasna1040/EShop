@@ -8,12 +8,13 @@ using Web.Models;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using System.ComponentModel.DataAnnotations;
 using ServiceLayer.Enums;
+using ServiceLayer.DTOs;
 
 namespace Web.Pages
 {
     public class IndexModel : PageModel
     {
-        public List<Product> Products { get; set; }
+        public Page<Product> Products { get; set; }
 
         public List<SelectListItem> ManufacturersFilter { get; set; }
 
@@ -27,7 +28,14 @@ namespace Web.Pages
         public int? CategoryId { get; set; }
 
         [BindProperty(SupportsGet = true)]
-        public OrderByEnum OrderBy { get; set; }
+        public OrderByEnum? OrderBy { get; set; }
+
+        [BindProperty(SupportsGet = true)]
+        public int CurrentPage { get; set; }
+
+        [BindProperty(SupportsGet = true)]
+        public int PageSize { get; set; }
+
 
 
         private readonly ILogger<IndexModel> _logger;
@@ -41,15 +49,17 @@ namespace Web.Pages
             _manufacturerService = manufacturerService;
         }
 
-        public void OnGet(string? search = null, int? categoryId = null, int[]? manufacturerIds = null, OrderByEnum? orderBy = OrderByEnum.NameAsc)
+        public void OnGet(string? search = null, int? categoryId = null, int[]? manufacturerIds = null, OrderByEnum? orderBy = OrderByEnum.NameAsc, int page = 1, int pageSize = 10)
         {
+            
             Search = search;
             CategoryId = categoryId;
-            Products = _productService.GetProducts(1, 20, search, categoryId, manufacturerIds);
-            if (manufacturerIds != null)
-            {
-                ManufacturersFilter = _manufacturerService.GetManufacturersFromSearch(search).Select(x => new SelectListItem { Value = x.ManufacturerId.ToString(), Text = x.Name, Selected = manufacturerIds.Contains(x.ManufacturerId) }).ToList();
-            }
+            OrderBy = orderBy;
+            CurrentPage = page;
+            PageSize = pageSize == 0 ? 10 : pageSize;
+            ManufacturerIds = manufacturerIds;
+            Products = _productService.GetProducts(CurrentPage, PageSize, Search, CategoryId, ManufacturerIds);
+            ManufacturersFilter = _manufacturerService.GetManufacturersFromSearch(search).Select(x => new SelectListItem { Value = x.ManufacturerId.ToString(), Text = x.Name, Selected = manufacturerIds != null && manufacturerIds.Contains(x.ManufacturerId) }).ToList();
         }
 
         public IActionResult OnPostAddProduct(int productId)
@@ -69,7 +79,7 @@ namespace Web.Pages
 
         public IActionResult OnPostSearch()
         {
-            return RedirectToPage("Index", new { search = Search, manufacturerIds = ManufacturerIds, categoryId = CategoryId, orderBy = OrderBy });
+            return RedirectToPage("Index", new { search = Search, manufacturerIds = ManufacturerIds, categoryId = CategoryId, orderBy = OrderBy, page = CurrentPage, pageSize = PageSize });
         }
     }
 }

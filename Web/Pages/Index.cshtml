@@ -20,6 +20,7 @@
                 <select class="form-select-sm" asp-for="OrderBy" asp-items="Html.GetEnumSelectList<ServiceLayer.Enums.OrderByEnum>()"></select>
                 <input type="hidden" asp-for="Search" value="@Model.Search" />
                 <input type="hidden" asp-for="CategoryId" value="@Model.CategoryId" />
+                <input type="hidden" asp-for="PageSize" value="@Model.PageSize" />
                 <input value="Søg" class="btn btn-success my-3" type="submit" />
             </div>
         </form>
@@ -29,7 +30,7 @@
         {
             <p>Søgeresultater for "@Model.Search"</p>
         }
-        @foreach (var product in Model.Products)
+        @foreach (var product in Model.Products.Items)
         {
             <div class="card">
                 <div class="card-body">
@@ -49,14 +50,27 @@
                 </div>
             </div>
         }
-        <nav class="">
+        <nav class="d-flex justify-content-between">
             <ul class="pagination">
-                <li class="page-item"><a class="page-link" href="#">Previous</a></li>
-                <li class="page-item"><a class="page-link" href="#">1</a></li>
-                <li class="page-item"><a class="page-link" href="#">2</a></li>
-                <li class="page-item"><a class="page-link" href="#">3</a></li>
-                <li class="page-item"><a class="page-link" href="#">Next</a></li>
+                <li class="page-item"><a href="@Url.Page("/Index", new { manufacturerIds = Model.ManufacturerIds, search = Model.Search, categoryId = Model.CategoryId, orderBy = Model.OrderBy, page = Model.Products.CurrentPage - 1})" class="page-link">Previous</a></li>
+                @for (int i = 1; i <= Model.Products.PageCount; i++)
+                {
+                    <li class="page-item"><a class="page-link" href="@Url.Page("/Index", new { manufacturerIds = Model.ManufacturerIds, search = Model.Search, categoryId = Model.CategoryId, orderBy = Model.OrderBy, page = i})">@i</a></li>
+                }
+                <li class="page-item"><a class="page-link" href="@Url.Page("/Index", new { manufacturerIds = Model.ManufacturerIds, search = Model.Search, categoryId = Model.CategoryId, orderBy = Model.OrderBy, page = Model.Products.CurrentPage + 1})">Next</a></li>
             </ul>
+            <form asp-page-handler="Search" method="post" name="pageSizeForm">
+                <input type="hidden" asp-for="Search" value="@Model.Search" />
+                <input type="hidden" asp-for="CategoryId" value="@Model.CategoryId" />
+                <input type="hidden" asp-for="CurrentPage" value="@Model.CurrentPage" />
+                <input type="hidden" asp-for="OrderBy" value="@Model.OrderBy" />
+                <input type="hidden" asp-for="ManufacturerIds" value="@Model.ManufacturerIds" />
+                <select asp-for="PageSize" onchange="document.forms['pageSizeForm'].submit()">
+                    <option value="10">10</option>
+                    <option value="50">50</option>
+                    <option value="100">100</option>
+                </select>
+            </form>
         </nav>
     </div>
 </div>
