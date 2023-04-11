@@ -43,9 +43,9 @@ namespace UnitTest
             using (var context = ContextCreater.CreateContext())
             {
                 ProductService productService = new(context);
-                List<Product> products = productService.GetProducts(1, 5);
-                Assert.Equal(5, products.Count);
-                Assert.Equal("G63 AMG 5", products.Last().Name);
+                Page<Product> products = productService.GetProducts(1, 5);
+                Assert.Equal(5, products.Total);
+                Assert.Equal("G63 AMG 5", products.Items.Last().Name);
             }
         }
 

@@ -5,8 +5,28 @@
 
 <div class="d-flex justify-content-center margin-top-150px">
     <div class="col-8 border rounded">
-        <form method="post">
-            <button type="submit" class="btn btn-success">Betal</button>
-        </form>
+        @if (HttpContext.Session.GetInt32("login").HasValue)
+        {
+            <form method="post">
+                <div class="d-flex justify-content-center">
+                    <div>
+                        <input id="payment1" class="btn-check" autocomplete="off" name="paymentMethod" type="radio" value="Dankort" />
+                        <label for="payment1" class="btn btn-outline-primary">Dankort</label>
+                        <input id="payment2" class="btn-check" autocomplete="off" name="paymentMethod" type="radio" value="Visa" />
+                        <label for="payment2" class="btn btn-outline-primary">Visa</label>
+                        <input id="payment3" class="btn-check" autocomplete="off" name="paymentMethod" type="radio" value="Mastercard" />
+                        <label for="payment3" class="btn btn-outline-primary">Mastercard</label>
+                        <input id="payment4" class="btn-check" autocomplete="off" name="paymentMethod" type="radio" value="Mobilepay" />
+                        <label for="payment4" class="btn btn-outline-primary">Mobilepay</label>
+                    </div>
+                </div>
+                <button type="submit" class="btn btn-success">Betal</button>
+            </form>
+        }
+        else
+        {
+            <a class="btn btn-primary me-3" asp-page="Login">Login</a>
+            <a class="btn btn-primary me-3" asp-page="Signup">Opret bruger</a>
+        }
     </div>
 </div>

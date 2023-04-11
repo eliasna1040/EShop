@@ -49,13 +49,13 @@ namespace Web.Pages
             _manufacturerService = manufacturerService;
         }
 
-        public void OnGet(string? search = null, int? categoryId = null, int[]? manufacturerIds = null, OrderByEnum? orderBy = OrderByEnum.NameAsc, int page = 1, int pageSize = 10)
+        public void OnGet(string? search = null, int? categoryId = null, int[]? manufacturerIds = null, OrderByEnum? orderBy = OrderByEnum.NameAsc, int currentPage = 1, int pageSize = 10)
         {
             
             Search = search;
             CategoryId = categoryId;
             OrderBy = orderBy;
-            CurrentPage = page;
+            CurrentPage = currentPage;
             PageSize = pageSize == 0 ? 10 : pageSize;
             ManufacturerIds = manufacturerIds;
             Products = _productService.GetProducts(CurrentPage, PageSize, Search, CategoryId, ManufacturerIds);
@@ -79,7 +79,7 @@ namespace Web.Pages
 
         public IActionResult OnPostSearch()
         {
-            return RedirectToPage("Index", new { search = Search, manufacturerIds = ManufacturerIds, categoryId = CategoryId, orderBy = OrderBy, page = CurrentPage, pageSize = PageSize });
+            return RedirectToPage("Index", new { search = Search, manufacturerIds = ManufacturerIds, categoryId = CategoryId, orderBy = OrderBy, currentPage = CurrentPage, pageSize = PageSize });
         }
     }
 }

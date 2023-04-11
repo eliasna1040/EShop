@@ -215,11 +215,100 @@ namespace DataLayer.Migrations
                     b.HasData(
                         new
                         {
-                            ProductId = 1,
+                            ProductId = 2,
                             CategoryId = 1,
                             Description = "en bil",
                             Disabled = false,
-                            ImageId = 1,
+                            ManufacturerId = 1,
+                            Name = "g63 amg",
+                            Price = 2000000.0
+                        },
+                        new
+                        {
+                            ProductId = 3,
+                            CategoryId = 1,
+                            Description = "en bil",
+                            Disabled = false,
+                            ManufacturerId = 1,
+                            Name = "g63 amg",
+                            Price = 2000000.0
+                        },
+                        new
+                        {
+                            ProductId = 4,
+                            CategoryId = 1,
+                            Description = "en bil",
+                            Disabled = false,
+                            ManufacturerId = 1,
+                            Name = "g63 amg",
+                            Price = 2000000.0
+                        },
+                        new
+                        {
+                            ProductId = 5,
+                            CategoryId = 1,
+                            Description = "en bil",
+                            Disabled = false,
+                            ManufacturerId = 1,
+                            Name = "g63 amg",
+                            Price = 2000000.0
+                        },
+                        new
+                        {
+                            ProductId = 6,
+                            CategoryId = 1,
+                            Description = "en bil",
+                            Disabled = false,
+                            ManufacturerId = 1,
+                            Name = "g63 amg",
+                            Price = 2000000.0
+                        },
+                        new
+                        {
+                            ProductId = 7,
+                            CategoryId = 1,
+                            Description = "en bil",
+                            Disabled = false,
+                            ManufacturerId = 1,
+                            Name = "g63 amg",
+                            Price = 2000000.0
+                        },
+                        new
+                        {
+                            ProductId = 8,
+                            CategoryId = 1,
+                            Description = "en bil",
+                            Disabled = false,
+                            ManufacturerId = 1,
+                            Name = "g63 amg",
+                            Price = 2000000.0
+                        },
+                        new
+                        {
+                            ProductId = 9,
+                            CategoryId = 1,
+                            Description = "en bil",
+                            Disabled = false,
+                            ManufacturerId = 1,
+                            Name = "g63 amg",
+                            Price = 2000000.0
+                        },
+                        new
+                        {
+                            ProductId = 10,
+                            CategoryId = 1,
+                            Description = "en bil",
+                            Disabled = false,
+                            ManufacturerId = 1,
+                            Name = "g63 amg",
+                            Price = 2000000.0
+                        },
+                        new
+                        {
+                            ProductId = 11,
+                            CategoryId = 1,
+                            Description = "en bil",
+                            Disabled = false,
                             ManufacturerId = 1,
                             Name = "g63 amg",
                             Price = 2000000.0

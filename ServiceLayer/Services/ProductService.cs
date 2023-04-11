@@ -61,7 +61,9 @@ namespace ServiceLayer.Services
                     break;
             }
 
-            return new Page<Product>() { Items = query.Page(page, count).ToList(), Total = query.Count(), CurrentPage = page, PageSize = count };
+            List<Product> products = query.Page(page, count).ToList();
+
+            return new Page<Product>() { Items = products, Total = query.Count(), CurrentPage = page, PageSize = count };
         }
 
         public Product? GetProduct(int productId)
