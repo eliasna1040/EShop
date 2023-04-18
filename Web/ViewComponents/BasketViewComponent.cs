@@ -34,7 +34,7 @@ namespace Web.ViewComponents
                         Product? product = _productService.GetProduct(item.ProductId);
                         if (product != null)
                         {
-                            basketItems.Add(new BasketItem { Id = product.ProductId, Name = product.Name, Amount = item.Amount, Price = product.Price});
+                            basketItems.Add(new BasketItem { Id = product.ProductId, Name = product.Name, Amount = item.Amount, Price = product.Price, Image = product.Image});
                         }
                     }
                 }

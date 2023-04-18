@@ -32,7 +32,7 @@ namespace Web.Pages
                     Product? product = _productService.GetProduct(item.ProductId);
                     if (product != null)
                     {
-                        BasketItems.Add(new BasketItem { Id = item.ProductId, Name = product.Name, Description = product.Description, Amount = item.Amount, Price = product.Price });
+                        BasketItems.Add(new BasketItem { Id = item.ProductId, Name = product.Name, Description = product.Description, Amount = item.Amount, Price = product.Price, Image = product.Image });
                     }
                 }
             }

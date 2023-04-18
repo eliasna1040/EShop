@@ -17,7 +17,7 @@
             <div id="basketItem@(product.Id)" class="mb-3">
                 <div class="d-flex justify-content-between">
                     <div class="d-flex">
-                        <img class="me-3" src="~/Images/image-not-found-icon.svg" height="50" />
+                        <img class="me-3" src="@(product.Image?.ImageData != null ? $"data:image/png;base64, {Convert.ToBase64String(product.Image.ImageData)}" : "/Images/image-not-found-icon.svg")" height="50" />
                         <p>@product.Name</p>
                     </div>
                     <div>

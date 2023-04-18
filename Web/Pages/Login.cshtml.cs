@@ -11,6 +11,8 @@ namespace Web.Pages
         public string Email { get; set; }
         [BindProperty, Required]
         public string Password { get; set; }
+        [BindProperty]
+        public string? ReturnPage { get; set; }
 
         private readonly ICustomerService _customerService;
 
@@ -19,8 +21,9 @@ namespace Web.Pages
             _customerService = customerService;
         }
 
-        public void OnGet()
+        public void OnGet(string? returnPage)
         {
+            ReturnPage = returnPage;
         }
 
         public IActionResult OnPost()
@@ -31,7 +34,7 @@ namespace Web.Pages
                 if (id.HasValue)
                 {
                     HttpContext.Session.SetInt32("login", id.Value);
-                    return RedirectToPage("Index");
+                    return RedirectToPage(ReturnPage ?? "Index");
                 }
             }
             return Page();

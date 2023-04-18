@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using ServiceLayer.DTOs;
 using ServiceLayer.Services;
+using Web.ExtensionMethods;
 
 namespace Web.Pages.Admin.Products
 {
@@ -16,7 +17,10 @@ namespace Web.Pages.Admin.Products
         public List<SelectListItem> Categories { get; set; }
 
         [BindProperty]
-        public ProductDTO ProductDTO { get; set; }
+        public ProductDTO Product { get; set; }
+
+        [BindProperty]
+        public IFormFile? Image { get; set; }
 
         [BindProperty]
         public int ProductId { get; set; }
@@ -47,9 +51,16 @@ namespace Web.Pages.Admin.Products
 
         public IActionResult OnPostAdd()
         {
+
             if (ModelState.IsValid)
             {
-                _productService.AddProduct(ProductDTO);
+                using MemoryStream ms = new MemoryStream();
+                if (Image != null)
+                {
+                    Image.CopyTo(ms);
+                    Product.Image = ms.ToArray();
+                }
+                _productService.AddProduct(Product);
             }
 
             return RedirectToPage();

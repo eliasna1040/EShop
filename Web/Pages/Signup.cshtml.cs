@@ -18,6 +18,8 @@ namespace Web.Pages
         public string Password { get; set; }
         [BindProperty, Compare("Password")]
         public string ConfirmPassword { get; set; }
+        [BindProperty]
+        public string? ReturnPage { get; set; }
 
         private readonly ICustomerService _customerService;
 
@@ -26,8 +28,9 @@ namespace Web.Pages
             _customerService = customerService;
         }
 
-        public void OnGet()
+        public void OnGet(string? returnPage)
         {
+            ReturnPage = returnPage;
         }
 
         public IActionResult OnPost()
@@ -35,7 +38,7 @@ namespace Web.Pages
             if (ModelState.IsValid)
             {
                 _customerService.AddCustomer(new CustomerDTO { Address = Address, Email = Email, Name = Name, Password = Password });
-                return RedirectToPage("Login");
+                return RedirectToPage("Login", new { returnPage = ReturnPage });
             }
             return Page();
         }

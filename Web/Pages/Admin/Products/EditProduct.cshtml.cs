@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using ServiceLayer.Services;
+using Web.ExtensionMethods;
 
 namespace Web.Pages.Admin.Products
 {
@@ -13,6 +14,8 @@ namespace Web.Pages.Admin.Products
 
         [BindProperty]
         public Product? Product { get; set; }
+        [BindProperty]
+        public IFormFile Image { get; set; }
 
         private readonly IManufacturerService _manufacturerService;
         private readonly ICategoryService _categoryService;
@@ -42,8 +45,14 @@ namespace Web.Pages.Admin.Products
 
         public IActionResult OnPost()
         {
-            if (ModelState.IsValid)
+            if (ModelState.MarkFieldsAsSkipped(new string[] {nameof(Image), nameof(Product.Manufacturer), nameof(Product.Category), nameof(Product.OrdersProducts)}).IsValid)
             {
+                using MemoryStream ms = new MemoryStream();
+                if (Image != null)
+                {
+                    Image.CopyTo(ms);
+                    Product.Image = new Image { ImageData = ms.ToArray() };
+                }
                 _productService.EditProduct(Product!);
             }
 

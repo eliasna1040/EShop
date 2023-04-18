@@ -50,7 +50,7 @@
 <div class="modal fade" id="modal" tabindex="-1">
     <div class="modal-dialog">
         <div class="modal-content">
-            <form method="post" asp-page-handler="Add">
+            <form method="post" asp-page-handler="Add" enctype="multipart/form-data">
                 <div class="modal-header">
                     <h5 class="modal-title" id="exampleModalLabel">Tilføj produkt</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
@@ -59,28 +59,33 @@
                     <div class="row g-3">
                         <div class="col-12">
                             <label class="form-label">Navn</label>
-                            <input class="form-control" type="text" asp-for="ProductDTO.Name" />
-                            <span class="form-text text-danger" asp-validation-for="ProductDTO.Name"></span>
+                            <input class="form-control" type="text" asp-for="Product.Name" />
+                            <span class="form-text text-danger" asp-validation-for="Product.Name"></span>
                         </div>
                         <div class="col-12">
                             <label class="form-label">Pris</label>
-                            <input class="form-control" type="text" asp-for="ProductDTO.Price" />
-                            <span class="form-text text-danger" asp-validation-for="ProductDTO.Price"></span>
+                            <input class="form-control" type="text" asp-for="Product.Price" />
+                            <span class="form-text text-danger" asp-validation-for="Product.Price"></span>
                         </div>
                         <div class="col-6">
                             <label class="form-label">Fabrikat</label>
-                            <select class="form-select" asp-for="ProductDTO.ManufacturerId" asp-items="Model.Manufacturers"></select>
-                            <span class="form-text text-danger" asp-validation-for="ProductDTO.ManufacturerId"></span>
+                            <select class="form-select" asp-for="Product.ManufacturerId" asp-items="Model.Manufacturers"></select>
+                            <span class="form-text text-danger" asp-validation-for="Product.ManufacturerId"></span>
                         </div>
                         <div class="col-6">
                             <label class="form-label">Kategori</label>
-                            <select class="form-select" asp-for="ProductDTO.CategoryId" asp-items="Model.Categories"></select>
-                            <span class="form-text text-danger" asp-validation-for="ProductDTO.CategoryId"></span>
+                            <select class="form-select" asp-for="Product.CategoryId" asp-items="Model.Categories"></select>
+                            <span class="form-text text-danger" asp-validation-for="Product.CategoryId"></span>
                         </div>
                         <div class="col-12">
                             <label>Beskrivelse</label>
-                            <textarea class="form-control" type="text" asp-for="ProductDTO.Description"></textarea>
-                            <span class="form-text text-danger" asp-validation-for="ProductDTO.Description"></span>
+                            <textarea class="form-control" type="text" asp-for="Product.Description"></textarea>
+                            <span class="form-text text-danger" asp-validation-for="Product.Description"></span>
+                        </div>
+                        <div class="col-12">
+                            <label>Billede</label>
+                            <input class="form-control" type="file" asp-for="Image" />
+                            <span class="form-text text-danger" asp-validation-for="Image"></span>
                         </div>
                     </div>
                 </div>

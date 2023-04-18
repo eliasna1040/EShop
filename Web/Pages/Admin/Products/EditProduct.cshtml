@@ -4,7 +4,7 @@
 }
 
 <div>
-    <form method="post" class="d-flex justify-content-center">
+    <form method="post" class="d-flex justify-content-center" enctype="multipart/form-data">
         <div class="row g-3 col-6 d-flex justify-content-center">
             <input type="hidden" asp-for="Product.ProductId" value="@Model.Product.ProductId" />
             <div class="col-12">
@@ -31,6 +31,11 @@
                 <label>Beskrivelse</label>
                 <textarea class="form-control" type="text" asp-for="Product.Description">@Model.Product.Description</textarea>
                 <span class="form-text text-danger" asp-validation-for="Product.Description"></span>
+            </div>
+            <div class="col-12">
+                <label>Billede</label>
+                <input class="form-control" type="file" asp-for="Image" />
+                <span class="form-text text-danger" asp-validation-for="Image"></span>
             </div>
             <div class="col-12">
                 <a class="btn btn-secondary" asp-page="Index">Annuller</a>

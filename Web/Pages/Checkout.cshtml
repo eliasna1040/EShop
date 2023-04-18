@@ -4,29 +4,65 @@
 }
 
 <div class="d-flex justify-content-center margin-top-150px">
-    <div class="col-8 border rounded">
+    <div class="col-6 border rounded">
         @if (HttpContext.Session.GetInt32("login").HasValue)
         {
             <form method="post">
-                <div class="d-flex justify-content-center">
+                <div class="d-flex justify-content-center mt-3">
                     <div>
-                        <input id="payment1" class="btn-check" autocomplete="off" name="paymentMethod" type="radio" value="Dankort" />
+                        <input id="payment1" class="btn-check" autocomplete="off" onclick="showPaymentCard()" name="paymentMethod" asp-for="PaymentMethod" type="radio" value="Dankort" checked />
                         <label for="payment1" class="btn btn-outline-primary">Dankort</label>
-                        <input id="payment2" class="btn-check" autocomplete="off" name="paymentMethod" type="radio" value="Visa" />
+                        <input id="payment2" class="btn-check" autocomplete="off" onclick="showPaymentCard()" name="paymentMethod" asp-for="PaymentMethod" type="radio" value="Visa" />
                         <label for="payment2" class="btn btn-outline-primary">Visa</label>
-                        <input id="payment3" class="btn-check" autocomplete="off" name="paymentMethod" type="radio" value="Mastercard" />
+                        <input id="payment3" class="btn-check" autocomplete="off" onclick="showPaymentCard()" name="paymentMethod" asp-for="PaymentMethod" type="radio" value="Mastercard" />
                         <label for="payment3" class="btn btn-outline-primary">Mastercard</label>
-                        <input id="payment4" class="btn-check" autocomplete="off" name="paymentMethod" type="radio" value="Mobilepay" />
+                        <input id="payment4" class="btn-check" autocomplete="off" onclick="showMobilepay()" name="paymentMethod" asp-for="PaymentMethod" type="radio" value="Mobilepay" />
                         <label for="payment4" class="btn btn-outline-primary">Mobilepay</label>
                     </div>
                 </div>
-                <button type="submit" class="btn btn-success">Betal</button>
+                <div class="d-flex justify-content-center mb-3 mt-4">
+                    <div id="paymentcard" class="col-8">
+                        <div>
+                            <label class="form-label">Kortnummer</label>
+                            <input class="form-control" type="number" asp-for="CheckOutCard.CardNumber" />
+                        </div>
+                        <div>
+                            <label class="form-label">Udløbsdato</label>
+                            <input class="form-control" type="month" asp-for="CheckOutCard.ExpireDate" />
+                        </div>
+                        <div>
+                            <label class="form-label">Sikkerheskode</label>
+                            <input class="form-control" type="number" asp-for="CheckOutCard.SecurityNumber" />
+                        </div>
+                        <div class="mt-2">
+                            <button type="submit" class="btn btn-success float-end">Betal</button>
+                        </div>
+                    </div>
+                    <div id="mobilepay" class="collapse col-8">
+                        <div>
+                            <label class="form-label">Telefonnummer</label>
+                            <input class="form-control" type="tel" asp-for="CheckOutMP.PhoneNumber" />
+                        </div>
+                        <div class="mt-2">
+                            <button type="submit" class="btn btn-success float-end">Betal</button>
+                        </div>
+                    </div>
+                </div>
             </form>
         }
         else
         {
-            <a class="btn btn-primary me-3" asp-page="Login">Login</a>
-            <a class="btn btn-primary me-3" asp-page="Signup">Opret bruger</a>
+            <div class="d-flex justify-content-center">
+                <div>
+                    <div class="d-flex justify-content-center my-4">
+                        <h4 class="col-8 text-wrap text-center">Du skal være logget ind for at checke ud</h4>
+                    </div>
+                    <div class="d-flex justify-content-center g-5 my-4">
+                        <a class="btn btn-primary me-3" asp-page="Login" asp-route-returnPage="Checkout">Login</a>
+                        <a class="btn btn-primary me-3" asp-page="Signup" asp-route-returnPage="Checkout">Opret bruger</a>
+                    </div>
+                </div>
+            </div>
         }
     </div>
 </div>

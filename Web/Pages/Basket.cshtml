@@ -9,7 +9,7 @@
             <div class="card">
                 <div class="card-body">
                     <div class="d-inline-block">
-                        <img src="" class="card-img bg-secondary" />
+                        <img height="50" src="@(product.Image?.ImageData != null ? $"data:image/png;base64, {Convert.ToBase64String(product.Image.ImageData)}" : "/Images/image-not-found-icon.svg")" class="card-img bg-secondary" />
                     </div>
                     <div class="d-inline-block">
                         <h5>@product.Name</h5>
@@ -41,7 +41,7 @@
                     </div>
                     <div>
                         <a asp-page="Index" class="btn btn-outline-secondary">Fortsæt handlen</a>
-                        <a asp-page="Checkout" class="btn btn-success">Checkout</a>
+                        <a asp-page="Checkout" class="btn btn-success">Check ud</a>
                     </div>
                 </div>
             </div>

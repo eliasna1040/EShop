@@ -105,6 +105,17 @@
 
             $("#basketTotal").text(currency.format(productsPrice.length > 0 ? productsPrice.reduce((a, b) => a + b) : 0))
         }
+
+        function showMobilepay(){
+            $("#paymentcard").hide()
+            $("#mobilepay").show()
+        }
+
+        function showPaymentCard(){
+            $("#mobilepay").hide()
+            $("#paymentcard").show()
+
+        }
     </script>
     @await RenderSectionAsync("Scripts", required: false)
 </body>

@@ -24,7 +24,7 @@ namespace ServiceLayer.Services
 
         public void AddProduct(ProductDTO product)
         {
-            _context.Products.Add(new Product { Name = product.Name, CategoryId = product.CategoryId, ManufacturerId = product.ManufacturerId, Price = product.Price, Description = product.Description });
+            _context.Products.Add(new Product { Name = product.Name, CategoryId = product.CategoryId, ManufacturerId = product.ManufacturerId, Price = product.Price, Description = product.Description, Image = product.Image != null ? new Image { ImageData = product.Image } : null });
             _context.SaveChanges();
         }
 
@@ -68,7 +68,7 @@ namespace ServiceLayer.Services
 
         public Product? GetProduct(int productId)
         {
-            return _context.Products.Include(x => x.Manufacturer).Include(x => x.Category).AsNoTracking().FirstOrDefault(x => x.ProductId == productId);
+            return _context.Products.Include(x => x.Manufacturer).Include(x => x.Category).Include(x => x.Image).AsNoTracking().FirstOrDefault(x => x.ProductId == productId);
         }
 
         public void EditProduct(Product newProduct)
