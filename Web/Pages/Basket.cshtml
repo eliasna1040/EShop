@@ -4,7 +4,7 @@
 
 }<div class="d-flex justify-content-center margin-top-150px">
     <div class="col-8">
-        @foreach (var product in Model.Products)
+        @foreach (var product in Model.BasketItems)
         {
             <div class="card">
                 <div class="card-body">
@@ -16,22 +16,35 @@
                         <p>@product.Description</p>
                     </div>
                     <div class="d-inline-block float-end">
-                        <h5>@product.Price.ToString("C2")</h5>
+                        <input id="item@(product.Id)TotalPrice" type="hidden" value="@product.TotalPrice" />
+                        <input id="item@(product.Id)Price" type="hidden" value="@product.Price" />
+                        <h5 class="text-end">(@product.Price.ToString("C2"))</h5>
+                        <h5 class="text-end" id="item@(product.Id)TotalPriceText">@product.TotalPrice.ToString("C2")</h5>
+                        <div class="d-flex justify-content-end mt-2">
+                            <div class="col-2 me-2">
+                                <input type="number" step="0.00" value="@product.Amount" onchange="updateAmount(@product.Id, this.value)" class="form-control text-center" />
+                            </div>
+                            <div>
+                                <button class="btn btn-danger" onclick="removeProduct(@product.Id)"><i class="bi bi-trash-fill"></i></button>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
         }
-        <div class="d-flex justify-content-between">
-            <nav class="">
-                <ul class="pagination">
-                    <li class="page-item"><a class="page-link" href="#">Previous</a></li>
-                    <li class="page-item"><a class="page-link" href="#">1</a></li>
-                    <li class="page-item"><a class="page-link" href="#">2</a></li>
-                    <li class="page-item"><a class="page-link" href="#">3</a></li>
-                    <li class="page-item"><a class="page-link" href="#">Next</a></li>
-                </ul>
-            </nav>
-            <a asp-page="Checkout" class="btn btn-success">Checkout</a>
+        <div class="card mt-3">
+            <div class="card-body">
+                <div class="d-flex justify-content-between">
+                    <div>
+                        <p class="col-12 m-0">Total:</p>
+                        <p class="col-12 m-0" id="basketTotal">@Model.BasketItems.Sum(x => x.TotalPrice).ToString("C2")</p>
+                    </div>
+                    <div>
+                        <a asp-page="Index" class="btn btn-outline-secondary">Fortsæt handlen</a>
+                        <a asp-page="Checkout" class="btn btn-success">Checkout</a>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 </div>

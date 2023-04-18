@@ -8,6 +8,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Web.JsonObjects;
+using Web.Models;
 
 namespace Web.ViewComponents
 {
@@ -22,7 +23,7 @@ namespace Web.ViewComponents
 
         public async Task<IViewComponentResult> InvokeAsync()
         {
-            List<Product> products = new();
+            List<BasketItem> basketItems = new();
             if (HttpContext.Request.Cookies.TryGetValue("Products", out string? cookie))
             {
                 List<BasketJson>? basket = JsonConvert.DeserializeObject<List<BasketJson>>(cookie!);
@@ -33,13 +34,13 @@ namespace Web.ViewComponents
                         Product? product = _productService.GetProduct(item.ProductId);
                         if (product != null)
                         {
-                            products.Add(product);
+                            basketItems.Add(new BasketItem { Id = product.ProductId, Name = product.Name, Amount = item.Amount, Price = product.Price});
                         }
                     }
                 }
             }
 
-            return View(products);
+            return View(basketItems);
         }
     }
 }

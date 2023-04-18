@@ -19,6 +19,7 @@ namespace DataLayer
         public DbSet<Category> Categories { get; set; }
         public DbSet<Manufacturer> Manufacturers { get; set; }
         public DbSet<Image> Images { get; set; }
+        public DbSet<OrderProduct> OrdersProducts { get; set; }
 
         public EShopContext(DbContextOptions<EShopContext> options) : base(options)
         {
@@ -33,6 +34,8 @@ namespace DataLayer
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            modelBuilder.Entity<OrderProduct>().HasKey(x => new { x.OrderId, x.ProductId });
+
             modelBuilder.Entity<Category>().HasData(new Category { Name = "bil", CategoryId = 1 });
             modelBuilder.Entity<Manufacturer>().HasData(new Manufacturer { Name = "Mercedes-Benz", ManufacturerId = 1 });
             modelBuilder.Entity<Image>().HasData(new Image { ImageData = File.ReadAllBytes(@"C:\Users\c98101ena\OneDrive - Ejner Hessel A S\Pictures\Skærmbillede 2023-04-05 203606.png"), ImageId = 1 });

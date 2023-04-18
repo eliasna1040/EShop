@@ -1,19 +1,50 @@
-﻿@using DataLayer.Entities
+﻿@using Web.Models
 @*
     For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 *@
-@model List<Product>
+@model List<BasketItem>
 @{
 }
 
-<ul class="dropdown-menu dropdown-menu-end">
-    @foreach (var product in Model)
-    {
-        <li class="d-flex justify-content-between">
-            <p>@product.Name</p>
-            <p>@product.Price.ToString("C2")</p>
-        </li>
-    }
-    <li>Total: @Model.Sum(x => x.Price).ToString("C2")</li>
-    <li><a class="btn btn-success" asp-page="Basket">Gå til kurv</a></li>
-</ul>
+<div class="offcanvas offcanvas-end" tabindex="-1" id="basket">
+    <div class="offcanvas-header">
+        <h5 id="basketLabel">Indkøbskurv</h5>
+        <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+    </div>
+    <div class="offcanvas-body">
+        @foreach (var product in Model)
+        {
+            <div id="basketItem@(product.Id)" class="mb-3">
+                <div class="d-flex justify-content-between">
+                    <div class="d-flex">
+                        <img class="me-3" src="~/Images/image-not-found-icon.svg" height="50" />
+                        <p>@product.Name</p>
+                    </div>
+                    <div>
+                        <p class="m-0 text-end">(@product.Price.ToString("C2"))</p>
+                        <p id="item@(product.Id)TotalPriceText" class="m-0 text-end">@product.TotalPrice.ToString("C2")</p>
+                        <input id="item@(product.Id)TotalPrice" type="hidden" value="@product.TotalPrice" />
+                        <input id="item@(product.Id)Price" type="hidden" value="@product.Price" />
+                    </div>
+                </div>
+                <div class="d-flex justify-content-end mt-2">
+                    <div class="col-2 me-2">
+                        <input type="number" step="0.00" value="@product.Amount" onchange="updateAmount(@product.Id, this.value)" class="form-control text-center" />
+                    </div>
+                    <div>
+                        <button class="btn btn-danger" onclick="removeProduct(@product.Id)"><i class="bi bi-trash-fill"></i></button>
+                    </div>
+                </div>
+            </div>
+        }
+        <div class="d-flex justify-content-between mt-4">
+            <div class="text-start">
+                <p class="col-12 m-0">Total:</p>
+                <p class="col-12 m-0" id="basketTotal">@Model.Sum(x => x.TotalPrice).ToString("C2")</p>
+            </div>
+            <div>
+                <a class="btn btn-success" asp-page="Basket">Gå til kurv</a>
+            </div>
+        </div>
+    </div>
+</div>

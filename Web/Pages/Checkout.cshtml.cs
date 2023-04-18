@@ -21,19 +21,23 @@ namespace Web.Pages
 
         public IActionResult OnPost()
         {
-            List<Product> products = new();
+            List<OrderProductDTO> orderProducts = new();
             string? cookie = HttpContext.Request.Cookies["Products"];
             if (cookie != null)
             {
                 foreach (BasketJson item in JsonConvert.DeserializeObject<List<BasketJson>>(cookie))
                 {
-                    products.Add(_productService.GetProduct(item.ProductId));
+                    Product? product = _productService.GetProduct(item.ProductId);
+                    if (product != null)
+                    {
+                        orderProducts.Add(new OrderProductDTO { ProductId = product.ProductId, Amount = item.Amount });
+                    }
                 }
             }
 
-            if (products.Any())
+            if (orderProducts.Any())
             {
-                _orderService.CreateOrder(new OrderDTO { CustomerId = HttpContext.Session.GetInt32("login").Value, ProductIds = products.Select(x => x.ProductId).ToList() });
+                _orderService.CreateOrder(new OrderDTO { CustomerId = HttpContext.Session.GetInt32("login").Value, OrdersProducts = orderProducts });
             }
 
             HttpContext.Response.Cookies.Delete("Products");

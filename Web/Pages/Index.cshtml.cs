@@ -51,7 +51,7 @@ namespace Web.Pages
 
         public void OnGet(string? search = null, int? categoryId = null, int[]? manufacturerIds = null, OrderByEnum? orderBy = OrderByEnum.NameAsc, int currentPage = 1, int pageSize = 10)
         {
-            
+
             Search = search;
             CategoryId = categoryId;
             OrderBy = orderBy;
@@ -65,13 +65,23 @@ namespace Web.Pages
         public IActionResult OnPostAddProduct(int productId)
         {
             string? cookie = Request.Cookies["Products"];
-            List<BasketJson> basket = new List<BasketJson>();
+            List<BasketJson>? basket = new List<BasketJson>();
             if (cookie != null)
             {
-                basket = JsonConvert.DeserializeObject<List<BasketJson>>(Request.Cookies["Products"]);
+                basket = JsonConvert.DeserializeObject<List<BasketJson>>(cookie);
             }
 
-            basket.Add(new BasketJson { ProductId = productId });
+            BasketJson? product = basket?.FirstOrDefault(x => x.ProductId == productId);
+
+            if (product == null)
+            {
+                basket?.Add(new BasketJson { ProductId = productId, Amount = 1, });
+            }
+            else
+            {
+                product.Amount += 1;
+            }
+
             Response.Cookies.Append("Products", JsonConvert.SerializeObject(basket), new CookieOptions() { Expires = DateTime.Now.AddDays(30) });
 
             return RedirectToPage();

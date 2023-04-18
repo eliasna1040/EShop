@@ -39,7 +39,7 @@ namespace UnitTest
                 context.SaveChanges();
 
                 OrderService orderService = new(context);
-                orderService.CreateOrder(new OrderDTO { CustomerId = 1, ProductIds = new List<int> { 1 } });
+                orderService.CreateOrder(new OrderDTO { CustomerId = 1, OrdersProducts = new List<int> { 1 } });
             }
 
             using (var context = ContextCreater.CreateContext())

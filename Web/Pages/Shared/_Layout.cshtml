@@ -30,10 +30,13 @@
                 <button type="submit" class="btn"><i class="bi bi-search h4"></i></button>
             </form>
             <div class="col-3 text-end">
-                <div class="btn-group">
-                    <button type="button" class="btn dropdown-toggle" data-bs-toggle="dropdown"><i class="bi bi-basket2-fill h4"></i></button>
-                    @await Component.InvokeAsync("Basket")
-                </div>
+                @if (string.IsNullOrEmpty(ViewData["Basket"]?.ToString()))
+                {
+                    <div class="d-inline-block">
+                        <button class="btn" type="button" data-bs-toggle="offcanvas" data-bs-target="#basket"><i class="bi bi-basket2-fill h4"></i></button>
+                        @await Component.InvokeAsync("Basket")
+                    </div>
+                }
                 @if (Context.Session.GetInt32("login").HasValue)
                 {
                     <a class="btn me-3"><i class="bi bi-person-circle h4"></i></a>
@@ -57,11 +60,52 @@
         </div>
     </footer>
 
+
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/js-cookie@3.0.1/dist/js.cookie.min.js"></script>
     <partial name="_ValidationScriptsPartial" />
     <script src="~/lib/bootstrap5.2.3/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
 
+    <script>
+
+        var currency = new Intl.NumberFormat('da-DK', {
+            style: 'currency',
+            currency: 'DKK',
+            minimumFractionDigits: 2,
+            maximumFractionDigits: 2,
+        })
+
+        function removeProduct(productId) {
+            var products = JSON.parse(Cookies.get("Products"))
+            products.splice(products.findIndex(x => x.ProductId == productId), 1)
+            Cookies.set("Products", JSON.stringify(products))
+
+            $(`#basketItem${productId}`).remove()
+            updatePrice()
+        }
+
+        function updateAmount(productId, amount) {
+            var products = JSON.parse(Cookies.get("Products"))
+            var product = products.find(x => x.ProductId == productId)
+            product.Amount = amount
+
+            $(`#item${productId}TotalPrice`).val(Number($(`#item${productId}Price`).val()) * amount)
+            $(`#item${productId}TotalPriceText`).text(currency.format($(`#item${productId}TotalPrice`).val()))
+            Cookies.set("Products", JSON.stringify(products))
+
+            updatePrice()
+        }
+
+        function updatePrice() {
+            var products = JSON.parse(Cookies.get("Products"))
+            var productsPrice = []
+
+            products.forEach(x => productsPrice.push(Number($(`#item${x.ProductId}TotalPrice`).val())))
+
+            $("#basketTotal").text(currency.format(productsPrice.length > 0 ? productsPrice.reduce((a, b) => a + b) : 0))
+        }
+    </script>
     @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>

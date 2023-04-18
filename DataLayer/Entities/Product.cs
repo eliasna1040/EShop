@@ -28,6 +28,7 @@ namespace DataLayer.Entities
         public Image? Image { get; set; }
         public Manufacturer Manufacturer { get; set; }
         public Category Category { get; set; }
-        public ICollection<Order> Orders { get; set; }
+        public ICollection<OrderProduct> OrdersProducts { get; set; }
+
     }
 }
