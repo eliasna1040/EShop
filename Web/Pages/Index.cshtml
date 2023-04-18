@@ -46,7 +46,7 @@
             }
             <nav class="d-flex justify-content-between">
                 <ul class="pagination">
-                    <li class="page-item"><input type="submit" asp-page-handler="Search" asp-route-CurrentPage="@(Model.CurrentPage + 1)" class="page-link" value="Previous" /></li>
+                    <li class="page-item"><input type="submit" asp-page-handler="Search" asp-route-CurrentPage="@(Model.CurrentPage - 1)" class="page-link" value="Previous" /></li>
                     @for (int i = 1; i <= Model.Products.PageCount; i++)
                     {
                         @*<li class="page-item"><a class="page-link" href="@Url.Page("/Index", new { manufacturerIds = Model.ManufacturerIds, search = Model.Search, categoryId = Model.CategoryId, orderBy = Model.OrderBy, page = i})">@i</a></li>*@

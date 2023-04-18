@@ -73,12 +73,10 @@ namespace ServiceLayer.Services
 
         public void EditProduct(Product newProduct)
         {
-            Product? product = _context.Products.AsNoTracking().FirstOrDefault(x => x.ProductId == newProduct.ProductId);
-            if (product == null)
+            if (!_context.Products.Any(x => x.ProductId == newProduct.ProductId))
                 return;
 
-            product = newProduct;
-            _context.Products.Update(product);
+            _context.Products.Update(newProduct);
 
             _context.SaveChanges();
         }

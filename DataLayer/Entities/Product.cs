@@ -13,19 +13,21 @@ namespace DataLayer.Entities
         public int ProductId { get; set; }
         [Required]
         public string Name { get; set; }
+        [Required]
         public string Description { get; set; }
         [Required]
         public double Price { get; set; }
+        [Required]
         public int CategoryId { get; set; }
-        public Category Category { get; set; }
         [Required]
         public int ManufacturerId { get; set; }
-        public Manufacturer Manufacturer { get; set; }
         [Required]
-        public bool Disabled { get; set; }
+        public bool Disabled { get; set; } = false;
         public int? ImageId { get; set; }
-        public Image? Image { get; set; }
 
+        public Image? Image { get; set; }
+        public Manufacturer Manufacturer { get; set; }
+        public Category Category { get; set; }
         public ICollection<Order> Orders { get; set; }
     }
 }

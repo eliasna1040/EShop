@@ -9,14 +9,20 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddDbContext<EShopContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("EShopContext")))
-            .AddScoped<ICategoryService, CategoryService>()
-            .AddScoped<IManufacturerService, ManufacturerService>()
-            .AddScoped<IOrderService, OrderService>()
-            .AddScoped<IProductService, ProductService>()
-            .AddScoped<ICustomerService, CustomerService>()
-            .AddSession(options => options.IdleTimeout = TimeSpan.FromMinutes(30))
-            .AddMemoryCache()
-            .AddRazorPages();
+                .AddScoped<ICategoryService, CategoryService>()
+                .AddScoped<IManufacturerService, ManufacturerService>()
+                .AddScoped<IOrderService, OrderService>()
+                .AddScoped<IProductService, ProductService>()
+                .AddScoped<ICustomerService, CustomerService>()
+                .AddSession(options => options.IdleTimeout = TimeSpan.FromMinutes(30))
+                .AddMemoryCache()
+                .Configure<CookiePolicyOptions>(options =>
+                {
+                    options.Secure = CookieSecurePolicy.Always;
+                    options.HttpOnly = Microsoft.AspNetCore.CookiePolicy.HttpOnlyPolicy.Always;
+                    options.MinimumSameSitePolicy = SameSiteMode.None;
+                })
+                .AddRazorPages();
 
 builder.Services.AddMvc();
 

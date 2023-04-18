@@ -1,0 +1,41 @@
+﻿@page
+@model Web.Pages.Admin.Customers.EditCustomerModel
+@{
+}
+
+<div>
+    <form method="post" class="d-flex justify-content-center">
+        <div class="row g-3 col-6 d-flex justify-content-center">
+            <input type="hidden" asp-for="Customer.CustomerId" value="@Model.Customer.CustomerId" />
+            <div class="col-12">
+                <label class="form-label">Navn</label>
+                <input class="form-control" type="text" asp-for="Customer.Name" value="@Model.Customer.Name" />
+                <span class="form-text text-danger" asp-validation-for="Customer.Name"></span>
+            </div>
+            <div class="col-12">
+                <label class="form-label">Email</label>
+                <input class="form-control" type="email" asp-for="Customer.Email" value="@Model.Customer.Email" />
+                <span class="form-text text-danger" asp-validation-for="Customer.Email"></span>
+            </div>
+            <div class="col-12">
+                <label class="form-label">Adresse</label>
+                <input class="form-control" type="text" asp-for="Customer.Address" value="@Model.Customer.Address" />
+                <span class="form-text text-danger" asp-validation-for="Customer.Address"></span>
+            </div>
+            <div class="col-12">
+                <label class="form-label">Adgangskode</label>
+                <input class="form-control" type="text" asp-for="Customer.Password" value="" />
+                <span class="form-text text-danger" asp-validation-for="Customer.Password"></span>
+            </div>
+            <div class="col-12">
+                <label class="form-label">Bekræft adgangskode</label>
+                <input class="form-control" type="text" asp-for="Customer.ConfirmPassword" />
+                <span class="form-text text-danger" asp-validation-for="Customer.ConfirmPassword"></span>
+            </div>
+            <div class="col-12">
+                <a class="btn btn-secondary" asp-page="Index">Annuller</a>
+                <input type="submit" class="btn btn-warning" />
+            </div>
+        </div>
+    </form>
+</div>

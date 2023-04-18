@@ -1,0 +1,94 @@
+﻿@page
+@model Web.Pages.Admin.Products.IndexModel
+@{
+}
+
+<table class="table table-striped table-hover">
+    <thead>
+        <tr>
+            <th>Billede</th>
+            <th>Id</th>
+            <th>Navn</th>
+            <th>Fabrikat</th>
+            <th>Kategori</th>
+            <th>Pris</th>
+            <th>Aktiv</th>
+            <th>Action</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var product in Model.Products.Items)
+        {
+            <tr>
+                <td><img src="@(product.Image?.ImageData != null ? $"data:image/png;base64, {Convert.ToBase64String(product.Image.ImageData)}" : "/Images/image-not-found-icon.svg")" height="50" class="card-img" /></td>
+                <td>@product.ProductId</td>
+                <td>@product.Name</td>
+                <td>@product.Manufacturer.Name</td>
+                <td>@product.Category.Name</td>
+                <td>@product.Price.ToString("C2")</td>
+                <td>@(!product.Disabled)</td>
+                <td>
+                    <form method="post">
+                        <div class="d-flex justify-content-center gap-3">
+                            <input type="hidden" asp-for="ProductId" value="@product.ProductId" />
+                            <a class="btn btn-warning" asp-page="EditProduct" asp-route-productId="@product.ProductId"><i class="bi bi-pencil-square"></i></a>
+                            <button class="btn btn-danger" asp-page-handler="Disable"><i class="bi bi-trash-fill"></i></button>
+                        </div>
+                    </form>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<!-- Button trigger modal -->
+<button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#modal">
+    Tilføj produkt
+</button>
+
+<!-- Modal -->
+<div class="modal fade" id="modal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <form method="post" asp-page-handler="Add">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Tilføj produkt</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="row g-3">
+                        <div class="col-12">
+                            <label class="form-label">Navn</label>
+                            <input class="form-control" type="text" asp-for="ProductDTO.Name" />
+                            <span class="form-text text-danger" asp-validation-for="ProductDTO.Name"></span>
+                        </div>
+                        <div class="col-12">
+                            <label class="form-label">Pris</label>
+                            <input class="form-control" type="text" asp-for="ProductDTO.Price" />
+                            <span class="form-text text-danger" asp-validation-for="ProductDTO.Price"></span>
+                        </div>
+                        <div class="col-6">
+                            <label class="form-label">Fabrikat</label>
+                            <select class="form-select" asp-for="ProductDTO.ManufacturerId" asp-items="Model.Manufacturers"></select>
+                            <span class="form-text text-danger" asp-validation-for="ProductDTO.ManufacturerId"></span>
+                        </div>
+                        <div class="col-6">
+                            <label class="form-label">Kategori</label>
+                            <select class="form-select" asp-for="ProductDTO.CategoryId" asp-items="Model.Categories"></select>
+                            <span class="form-text text-danger" asp-validation-for="ProductDTO.CategoryId"></span>
+                        </div>
+                        <div class="col-12">
+                            <label>Beskrivelse</label>
+                            <textarea class="form-control" type="text" asp-for="ProductDTO.Description"></textarea>
+                            <span class="form-text text-danger" asp-validation-for="ProductDTO.Description"></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-success">Save changes</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

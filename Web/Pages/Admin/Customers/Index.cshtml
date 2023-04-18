@@ -1,0 +1,90 @@
+﻿@page
+@model Web.Pages.Admin.Customers.IndexModel
+@{
+}
+
+<table class="table table-striped table-hover">
+    <thead>
+        <tr>
+            <th>Id</th>
+            <th>Navn</th>
+            <th>Email</th>
+            <th>Adresse</th>
+            <th>Aktiv</th>
+            <th>Action</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var customer in Model.Customers.Items)
+        {
+            <tr>
+                <td>@customer.CustomerId</td>
+                <td>@customer.Name</td>
+                <td>@customer.Email</td>
+                <td>@customer.Address</td>
+                <td>@(!customer.Disabled)</td>
+                <td>
+                    <form method="post">
+                        <div class="d-flex justify-content-center gap-3">
+                            <input type="hidden" asp-for="CustomerId" value="@customer.CustomerId" />
+                            <a class="btn btn-warning" asp-page="EditCustomer" asp-route-customerId="@customer.CustomerId"><i class="bi bi-pencil-square"></i></a>
+                            <button class="btn btn-danger" asp-page-handler="Disable"><i class="bi bi-trash-fill"></i></button>
+                        </div>
+                    </form>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<!-- Button trigger modal -->
+<button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#modal">
+    Tilføj kunde
+</button>
+
+<!-- Modal -->
+<div class="modal fade" id="modal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <form method="post" asp-page-handler="Add">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Tilføj kunde</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="row g-3">
+                        <div class="col-12">
+                            <label class="form-label">Navn</label>
+                            <input class="form-control" type="text" asp-for="CustomerDTO.Name" />
+                            <span class="form-text text-danger" asp-validation-for="CustomerDTO.Name"></span>
+                        </div>
+                        <div class="col-12">
+                            <label class="form-label">Adresse</label>
+                            <input class="form-control" type="text" asp-for="CustomerDTO.Address" />
+                            <span class="form-text text-danger" asp-validation-for="CustomerDTO.Address"></span>
+                        </div>
+                        <div class="col-12">
+                            <label class="form-label">Email</label>
+                            <input class="form-control" type="text" asp-for="CustomerDTO.Email" />
+                            <span class="form-text text-danger" asp-validation-for="CustomerDTO.Email"></span>
+                        </div>
+                        <div class="col-12">
+                            <label class="form-label">Adgangskode</label>
+                            <input class="form-control" type="password" asp-for="CustomerDTO.Password" />
+                            <span class="form-text text-danger" asp-validation-for="CustomerDTO.Password"></span>
+                        </div>
+                        <div class="col-12">
+                            <label class="form-label">Bekræft adgangskode</label>
+                            <input class="form-control" type="password" asp-for="CustomerDTO.ConfirmPassword" />
+                            <span class="form-text text-danger" asp-validation-for="CustomerDTO.ConfirmPassword"></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-success">Save changes</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,41 @@
+﻿@page
+@model Web.Pages.Admin.Products.EditProductModel
+@{
+}
+
+<div>
+    <form method="post" class="d-flex justify-content-center">
+        <div class="row g-3 col-6 d-flex justify-content-center">
+            <input type="hidden" asp-for="Product.ProductId" value="@Model.Product.ProductId" />
+            <div class="col-12">
+                <label class="form-label">Navn</label>
+                <input class="form-control" type="text" asp-for="Product.Name" value="@Model.Product.Name" />
+                <span class="form-text text-danger" asp-validation-for="Product.Name"></span>
+            </div>
+            <div class="col-12">
+                <label class="form-label">Pris</label>
+                <input class="form-control" type="text" asp-for="Product.Price" step="any" value="@Model.Product.Price" />
+                <span class="form-text text-danger" asp-validation-for="Product.Price"></span>
+            </div>
+            <div class="col-6">
+                <label class="form-label">Fabrikat</label>
+                <select class="form-select" asp-for="Product.ManufacturerId" asp-items="Model.Manufacturers"></select>
+                <span class="form-text text-danger" asp-validation-for="Product.ManufacturerId"></span>
+            </div>
+            <div class="col-6">
+                <label class="form-label">Kategori</label>
+                <select class="form-select" asp-for="Product.CategoryId" asp-items="Model.Categories"></select>
+                <span class="form-text text-danger" asp-validation-for="Product.CategoryId"></span>
+            </div>
+            <div class="col-12">
+                <label>Beskrivelse</label>
+                <textarea class="form-control" type="text" asp-for="Product.Description">@Model.Product.Description</textarea>
+                <span class="form-text text-danger" asp-validation-for="Product.Description"></span>
+            </div>
+            <div class="col-12">
+                <a class="btn btn-secondary" asp-page="Index">Annuller</a>
+                <input type="submit" class="btn btn-warning" />
+            </div>
+        </div>
+    </form>
+</div>

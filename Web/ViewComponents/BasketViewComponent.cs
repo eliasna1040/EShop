@@ -23,12 +23,19 @@ namespace Web.ViewComponents
         public async Task<IViewComponentResult> InvokeAsync()
         {
             List<Product> products = new();
-            string? cookie = HttpContext.Request.Cookies["Products"];
-            if (cookie != null)
+            if (HttpContext.Request.Cookies.TryGetValue("Products", out string? cookie))
             {
-                foreach (BasketJson item in JsonConvert.DeserializeObject<List<BasketJson>>(cookie))
+                List<BasketJson>? basket = JsonConvert.DeserializeObject<List<BasketJson>>(cookie!);
+                if (basket != null)
                 {
-                    products.Add(_productService.GetProduct(item.ProductId));
+                    foreach (BasketJson item in basket)
+                    {
+                        Product? product = _productService.GetProduct(item.ProductId);
+                        if (product != null)
+                        {
+                            products.Add(product);
+                        }
+                    }
                 }
             }
 

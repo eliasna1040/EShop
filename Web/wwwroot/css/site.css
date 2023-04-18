@@ -24,3 +24,7 @@ body {
 .margin-top-150px{
     margin-top: 150px;
 }
+
+th, td {
+    text-align: center;
+}
