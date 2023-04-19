@@ -8,6 +8,6 @@ namespace ServiceLayer.ExtensionMethods
 {
     public static class Paging
     {
-        public static IQueryable<T> Page<T>(this IQueryable<T> query, int start, int take) => query.Skip((start - 1) * take).Take(take);
+        public static IQueryable<T> Page<T>(this IQueryable<T> query, int start = 1, int take = 10) => query.Skip((start - 1) * take).Take(take);
     }
 }

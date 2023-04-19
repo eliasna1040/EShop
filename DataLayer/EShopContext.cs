@@ -52,7 +52,7 @@ namespace DataLayer
                 new Product { ProductId = 10, Name = "g63 amg", CategoryId = 1, Description = "en bil", ManufacturerId = 1, Price = 2000000 }, 
                 new Product { ProductId = 11, Name = "g63 amg", CategoryId = 1, Description = "en bil", ManufacturerId = 1, Price = 2000000 }, 
             });
-            modelBuilder.Entity<Customer>().HasData(new Customer { Name = "Elias", Address = "Hvor kragerne vender", CustomerId = 1, Email = "test@test.test", Password = "P@ssw0rd" });
+            modelBuilder.Entity<Customer>().HasData(new Customer { Name = "Elias", Address = "Hvor kragerne vender", CustomerId = 1, Email = "test@test.test", Password = "P@ssw0rd", Admin = false });
         }
     }
 }

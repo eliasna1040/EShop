@@ -20,6 +20,11 @@ namespace Web.Pages.Admin.Customers
 
         public IActionResult OnGet(int customerId)
         {
+            if (!HttpContext.Session.GetInt32("IsAdmin").HasValue)
+            {
+                return Redirect("~/");
+            }
+
             Customer = _customerService.GetCustomer(customerId);
 
             if (Customer == null)
@@ -32,6 +37,11 @@ namespace Web.Pages.Admin.Customers
 
         public IActionResult OnPost()
         {
+            if (!HttpContext.Session.GetInt32("IsAdmin").HasValue)
+            {
+                return Redirect("~/");
+            }
+
             if (ModelState.IsValid)
             {
                 _customerService.EditCustomer(Customer!);

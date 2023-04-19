@@ -36,21 +36,36 @@ namespace Web.Pages.Admin.Products
             _manufacturerService = manufacturerService;
         }
 
-        public void OnGet(int currentPage = 1, int count = 10)
+        public IActionResult OnGet(int currentPage = 1, int count = 10)
         {
+            if (!HttpContext.Session.GetInt32("IsAdmin").HasValue)
+            {
+                return Redirect("~/");
+            }
+
             Products = _productService.GetProducts(currentPage, count);
             Manufacturers = _manufacturerService.GetManufacturers().Select(x => new SelectListItem { Text = x.Name, Value = x.ManufacturerId.ToString() }).ToList();
             Categories = _categoryService.GetCategories().Select(x => new SelectListItem { Text = x.Name, Value = x.CategoryId.ToString() }).ToList();
+            return Page();
         }
 
         public IActionResult OnPostDisable()
         {
+            if (!HttpContext.Session.GetInt32("IsAdmin").HasValue)
+            {
+                return Redirect("~/");
+            }
+
             _productService.DisableProduct(ProductId);
             return RedirectToPage();
         }
 
         public IActionResult OnPostAdd()
         {
+            if (!HttpContext.Session.GetInt32("IsAdmin").HasValue)
+            {
+                return Redirect("~/");
+            }
 
             if (ModelState.IsValid)
             {

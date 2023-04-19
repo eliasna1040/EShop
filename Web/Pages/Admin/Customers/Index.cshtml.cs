@@ -24,13 +24,24 @@ namespace Web.Pages.Admin.Customers
             _customerService = customerService;
         }
 
-        public void OnGet(int currentPage = 1, int pageSize = 10)
+        public IActionResult OnGet(int currentPage = 1, int pageSize = 10)
         {
+            if (!HttpContext.Session.GetInt32("IsAdmin").HasValue)
+            {
+                return Redirect("~/");
+            }
+
             Customers = _customerService.GetCustomers(currentPage, pageSize);
+            return Page();
         }
 
         public IActionResult OnPostAdd()
         {
+            if (!HttpContext.Session.GetInt32("IsAdmin").HasValue)
+            {
+                return Redirect("~/");
+            }
+
             if (ModelState.IsValid)
             {
                 _customerService.AddCustomer(CustomerDTO);
@@ -41,6 +52,11 @@ namespace Web.Pages.Admin.Customers
 
         public IActionResult OnPostDisable()
         {
+            if (!HttpContext.Session.GetInt32("IsAdmin").HasValue)
+            {
+                return Redirect("~/");
+            }
+
             _customerService.DisableCustomer(CustomerId);
             return RedirectToPage();
         }

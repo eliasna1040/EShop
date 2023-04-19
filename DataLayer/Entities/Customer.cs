@@ -23,6 +23,7 @@ namespace DataLayer.Entities
         public string ConfirmPassword { get; set; }
         [Required]
         public string Address { get; set; }
+        public bool Admin { get; set; } = false;
         [Required]
         public bool Disabled { get; set; } = false;
 

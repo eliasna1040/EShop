@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using ServiceLayer.DTOs;
 using ServiceLayer.Services;
 using System.ComponentModel.DataAnnotations;
 
@@ -21,19 +22,28 @@ namespace Web.Pages
             _customerService = customerService;
         }
 
-        public void OnGet(string? returnPage)
+        public IActionResult OnGet(string? returnPage)
         {
+            if (HttpContext.Session.GetInt32("login").HasValue)
+            {
+                return RedirectToPage("Index");
+            }
             ReturnPage = returnPage;
+            return Page();
         }
 
         public IActionResult OnPost()
         {
             if (ModelState.IsValid)
             {
-                int? id = _customerService.Login(Email, Password);
-                if (id.HasValue)
+                UserDTO user = _customerService.Login(Email, Password);
+                if (user.Id.HasValue)
                 {
-                    HttpContext.Session.SetInt32("login", id.Value);
+                    HttpContext.Session.SetInt32("login", user.Id.Value);
+                    if (user.IsAdmin)
+                    {
+                        HttpContext.Session.SetInt32("IsAdmin", 1);
+                    }
                     return RedirectToPage(ReturnPage ?? "Index");
                 }
             }

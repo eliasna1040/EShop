@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -15,7 +16,7 @@ namespace DataLayer.Entities
         public string Name { get; set; }
         [Required]
         public string Description { get; set; }
-        [Required]
+        [Required, Column(TypeName = "decimal(8:2)"), DataType(DataType.Currency)]
         public double Price { get; set; }
         [Required]
         public int CategoryId { get; set; }

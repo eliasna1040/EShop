@@ -10,6 +10,6 @@ namespace ServiceLayer.Services
         void EditCustomer(Customer customer);
         Customer? GetCustomer(int id);
         Page<Customer> GetCustomers(int page, int count);
-        int? Login(string email, string password);
+        UserDTO Login(string email, string password);
     }
 }

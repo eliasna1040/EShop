@@ -19,5 +19,7 @@ namespace ServiceLayer.DTOs
         public string ConfirmPassword { get; set; }
         [Required]
         public string Address { get; set; }
+        [Required]
+        public bool Admin { get; set; }
     }
 }

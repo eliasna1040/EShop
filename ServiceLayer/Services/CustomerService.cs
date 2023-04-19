@@ -64,9 +64,10 @@ namespace ServiceLayer.Services
             return new Page<Customer>() { Items = customers, Total = query.Count(), CurrentPage = page, PageSize = count };
         }
 
-        public int? Login(string email, string password)
+        public UserDTO? Login(string email, string password)
         {
-            return _context.Customers.FirstOrDefault(x => x.Email == email && x.Password == password)?.CustomerId;
+            Customer? customer = _context.Customers.FirstOrDefault(x => x.Email == email && x.Password == password);
+            return new UserDTO { Id = customer?.CustomerId, IsAdmin = customer?.Admin ?? false };
         }
 
         public void AddCustomer(CustomerDTO customer)
@@ -76,7 +77,7 @@ namespace ServiceLayer.Services
                 return;
             }
 
-            _context.Customers.Add(new Customer { Name = customer.Name, Email = customer.Email, Address = customer.Address, Password = customer.Password });
+            _context.Customers.Add(new Customer { Name = customer.Name, Email = customer.Email, Address = customer.Address, Password = customer.Password, Admin = customer.Admin });
             _context.SaveChanges();
         }
 

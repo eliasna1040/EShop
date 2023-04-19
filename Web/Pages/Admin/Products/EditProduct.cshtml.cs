@@ -15,7 +15,7 @@ namespace Web.Pages.Admin.Products
         [BindProperty]
         public Product? Product { get; set; }
         [BindProperty]
-        public IFormFile Image { get; set; }
+        public IFormFile? Image { get; set; }
 
         private readonly IManufacturerService _manufacturerService;
         private readonly ICategoryService _categoryService;
@@ -30,6 +30,11 @@ namespace Web.Pages.Admin.Products
 
         public IActionResult OnGet(int productId)
         {
+            if (!HttpContext.Session.GetInt32("IsAdmin").HasValue)
+            {
+                return Redirect("~/");
+            }
+
             Product = _productService.GetProduct(productId);
 
             if (Product == null)
@@ -45,6 +50,11 @@ namespace Web.Pages.Admin.Products
 
         public IActionResult OnPost()
         {
+            if (!HttpContext.Session.GetInt32("IsAdmin").HasValue)
+            {
+                return Redirect("~/");
+            }
+
             if (ModelState.MarkFieldsAsSkipped(new string[] {nameof(Image), nameof(Product.Manufacturer), nameof(Product.Category), nameof(Product.OrdersProducts)}).IsValid)
             {
                 using MemoryStream ms = new MemoryStream();

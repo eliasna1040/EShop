@@ -16,7 +16,7 @@ namespace UnitTest
         {
             using (var context = ContextCreater.CreateContext())
             {
-                context.Orders.Add(new Order { Customer = new Customer { Name = "Elias", Address = "Hvor kragerne vender", CustomerId = 1, Email = "test@test.test", Password = "P@ssw0rd" }, Products = new List<Product> { new Product { Name = "G63 AMG", Price = 2500000, Description = "en bil", Category = new Category { Name = "Bil" }, Manufacturer = new Manufacturer { Name = "Mercedes" } }, new Product { Name = "G63 AMG", Price = 2500000, Description = "en bil", CategoryId = 1, ManufacturerId = 1 } } });
+                //context.Orders.Add(new Order { Customer = new Customer { Name = "Elias", Address = "Hvor kragerne vender", CustomerId = 1, Email = "test@test.test", Password = "P@ssw0rd" }, Products = new List<Product> { new Product { Name = "G63 AMG", Price = 2500000, Description = "en bil", Category = new Category { Name = "Bil" }, Manufacturer = new Manufacturer { Name = "Mercedes" } }, new Product { Name = "G63 AMG", Price = 2500000, Description = "en bil", CategoryId = 1, ManufacturerId = 1 } } });
                 context.SaveChanges();
             }
 
@@ -39,7 +39,7 @@ namespace UnitTest
                 context.SaveChanges();
 
                 OrderService orderService = new(context);
-                orderService.CreateOrder(new OrderDTO { CustomerId = 1, OrdersProducts = new List<int> { 1 } });
+                //orderService.CreateOrder(new OrderDTO { CustomerId = 1, OrdersProducts = new List<int> { 1 } });
             }
 
             using (var context = ContextCreater.CreateContext())

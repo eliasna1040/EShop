@@ -28,7 +28,7 @@ namespace ServiceLayer.Services
             _context.SaveChanges();
         }
 
-        public Page<Product> GetProducts(int page, int count, string? search = null, int? categoryId = null, int[]? manufacturerIds = null, OrderByEnum? orderBy = OrderByEnum.NameAsc)
+        public Page<Product> GetProducts(int page = 1, int count = 10, string? search = null, int? categoryId = null, int[]? manufacturerIds = null, OrderByEnum? orderBy = OrderByEnum.NameAsc)
         {
             IQueryable<Product> query = _context.Products.Include(x => x.Manufacturer).Include(x => x.Category).Include(x => x.Image).AsNoTracking();
 
@@ -61,9 +61,7 @@ namespace ServiceLayer.Services
                     break;
             }
 
-            List<Product> products = query.Page(page, count).ToList();
-
-            return new Page<Product>() { Items = products, Total = query.Count(), CurrentPage = page, PageSize = count };
+            return new Page<Product>() { Items = query.Page(page, count).ToList(), Total = query.Count(), CurrentPage = page, PageSize = count };
         }
 
         public Product? GetProduct(int productId)

@@ -55,7 +55,7 @@ namespace Web.Pages
             Search = search;
             CategoryId = categoryId;
             OrderBy = orderBy;
-            CurrentPage = currentPage;
+            CurrentPage = currentPage == 0 ? 1 : currentPage;
             PageSize = pageSize == 0 ? 10 : pageSize;
             ManufacturerIds = manufacturerIds;
             Products = _productService.GetProducts(CurrentPage, PageSize, Search, CategoryId, ManufacturerIds);

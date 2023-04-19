@@ -78,6 +78,11 @@
                             <input class="form-control" type="password" asp-for="CustomerDTO.ConfirmPassword" />
                             <span class="form-text text-danger" asp-validation-for="CustomerDTO.ConfirmPassword"></span>
                         </div>
+                        <div>
+                            <label class="form-label">Admin</label>
+                            <input class="form-control" type="checkbox" asp-for="CustomerDTO.Admin" />
+                            <span class="form-text text-danger" asp-validation-for="CustomerDTO.Admin"></span>
+                        </div>
                     </div>
                 </div>
                 <div class="modal-footer">

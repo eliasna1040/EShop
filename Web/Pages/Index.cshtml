@@ -5,7 +5,7 @@
 }
 
 <form asp-page-handler="Search" method="post" name="pageSizeForm">
-    <div class="d-flex justify-content-center margin-top-150px row gx-5">
+    <div class="d-flex justify-content-center margin-top-100px row gx-5">
         <div class="col-2 border">
             <div class="d-flex flex-column">
                 <h5 class="my-3">Filter</h5>
@@ -44,7 +44,7 @@
                     </div>
                 </div>
             }
-            <nav class="d-flex justify-content-between">
+            <nav class="d-flex justify-content-between mt-2">
                 <ul class="pagination">
                     <li class="page-item"><input type="submit" asp-page-handler="Search" asp-route-CurrentPage="@(Model.CurrentPage - 1)" class="page-link" value="Previous" /></li>
                     @for (int i = 1; i <= Model.Products.PageCount; i++)
