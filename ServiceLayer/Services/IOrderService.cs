@@ -1,13 +1,14 @@
 ﻿using DataLayer.Entities;
 using ServiceLayer.DTOs;
+using ServiceLayer.ViewModels;
 
 namespace ServiceLayer.Services
 {
     public interface IOrderService
     {
-        void CreateOrder(OrderDTO order);
-        void DisableOrder(int orderId);
-        Order? GetOrder(int orderId);
-        List<Order> GetOrders();
+        OrderModel CreateOrder(OrderDTO order);
+        OrderModel? DisableOrder(int orderId);
+        OrderModel? GetOrder(int orderId);
+        Page<OrderModel> GetOrders(int page, int count);
     }
 }

@@ -1,14 +1,16 @@
 ﻿using DataLayer.Entities;
+using Microsoft.AspNetCore.JsonPatch;
 using ServiceLayer.DTOs;
+using ServiceLayer.ViewModels;
 
 namespace ServiceLayer.Services
 {
     public interface IManufacturerService
     {
-        void AddManufacturer(ManufacturerDTO manufacturer);
-        void DisableManufacturer(int manufaturerId);
-        void EditManufacturer(Manufacturer newManufacturer);
-        List<Manufacturer> GetManufacturers();
-        List<Manufacturer> GetManufacturersFromSearch(string? search);
+        ManufacturerModel AddManufacturer(string manufacturer);
+        ManufacturerModel? DisableManufacturer(int manufaturerId);
+        ManufacturerModel? EditManufacturer(int id, JsonPatchDocument<Manufacturer> newManufacturer);
+        Page<ManufacturerModel> GetManufacturers(int start, int count);
+        List<ManufacturerModel> GetManufacturersFromSearch(string? search);
     }
 }

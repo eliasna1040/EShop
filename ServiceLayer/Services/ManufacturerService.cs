@@ -7,6 +7,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using ServiceLayer.ViewModels;
+using ServiceLayer.ExtensionMethods;
+using Microsoft.AspNetCore.JsonPatch;
 
 namespace ServiceLayer.Services
 {
@@ -19,46 +22,55 @@ namespace ServiceLayer.Services
             _context = context;
         }
 
-        public void AddManufacturer(ManufacturerDTO manufacturer)
+        public ManufacturerModel AddManufacturer(string manufacturer)
         {
-            _context.Manufacturers.Add(new Manufacturer { Name = manufacturer.Name });
+            Manufacturer addedManufacturer = new Manufacturer { Name = manufacturer };
+            _context.Manufacturers.Add(addedManufacturer);
             _context.SaveChanges();
+            _context.Entry(addedManufacturer).Reload();
+            return new ManufacturerModel(addedManufacturer);
         }
 
-        public List<Manufacturer> GetManufacturers()
+        public Page<ManufacturerModel> GetManufacturers(int start, int count)
         {
-            return _context.Manufacturers.AsNoTracking().ToList();
+            IQueryable<Manufacturer> query = _context.Manufacturers.AsNoTracking();
+            return new Page<ManufacturerModel> { CurrentPage = start, PageSize = count, Items = query.Page(start, count).Select(x => new ManufacturerModel(x)).ToList(), Total = query.Count() };
         }
 
-        public List<Manufacturer> GetManufacturersFromSearch(string? search)
+        public List<ManufacturerModel> GetManufacturersFromSearch(string? search)
         {
-            return string.IsNullOrWhiteSpace(search) ? GetManufacturers() : _context.Products.Where(p => p.Name.ToLower().Contains(search.ToLower()) || p.Manufacturer.Name.ToLower().Contains(search.ToLower()))
+            return string.IsNullOrWhiteSpace(search) ? _context.Manufacturers.AsNoTracking().Select(x => new ManufacturerModel(x)).ToList() : _context.Products.Where(p => p.Name.ToLower().Contains(search.ToLower()) || p.Manufacturer.Name.ToLower().Contains(search.ToLower()))
                                                                                              .Include(x => x.Manufacturer)
-                                                                                             .Select(x => x.Manufacturer)
+                                                                                             .Select(x => new ManufacturerModel(x.Manufacturer))
                                                                                              .AsNoTracking()
                                                                                              .ToList();
         }
 
-        public void EditManufacturer(Manufacturer newManufacturer)
+        public ManufacturerModel? EditManufacturer(int id, JsonPatchDocument<Manufacturer> newManufacturer)
         {
-            Manufacturer? manufacturer = _context.Manufacturers.AsNoTracking().FirstOrDefault(x => x.ManufacturerId == newManufacturer.ManufacturerId);
+            Manufacturer? manufacturer = _context.Manufacturers.AsNoTracking().FirstOrDefault(x => x.ManufacturerId == id);
             if (manufacturer == null)
-                return;
+                return null;
 
-            manufacturer = newManufacturer;
-            _context.Entry(manufacturer).State = EntityState.Modified;
+            newManufacturer.ApplyTo(manufacturer);
+
+            _context.Update(manufacturer);
 
             _context.SaveChanges();
+
+            return new ManufacturerModel(manufacturer);
         }
 
-        public void DisableManufacturer(int manufaturerId)
+        public ManufacturerModel? DisableManufacturer(int manufaturerId)
         {
             Manufacturer? manufacturer = _context.Manufacturers.AsNoTracking().FirstOrDefault(x => x.ManufacturerId == manufaturerId);
             if (manufacturer == null)
-                return;
+                return null;
 
             manufacturer.Disabled = !manufacturer.Disabled;
             _context.SaveChanges();
+
+            return new ManufacturerModel(manufacturer);
         }
     }
 }

@@ -17,7 +17,6 @@ namespace DataLayer.Entities
         public int CustomerId { get; set; }
         [Required]
         public bool Disabled { get; set; }
-        public int Amount { get; set; }
 
         public Customer Customer { get; set; }
         public ICollection<OrderProduct> OrdersProducts { get; set; }

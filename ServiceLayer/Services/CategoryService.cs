@@ -1,6 +1,9 @@
 ﻿using DataLayer;
 using DataLayer.Entities;
 using Microsoft.EntityFrameworkCore;
+using ServiceLayer.DTOs;
+using ServiceLayer.ExtensionMethods;
+using ServiceLayer.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -18,25 +21,32 @@ namespace ServiceLayer.Services
             _context = context;
         }
 
-        public List<Category> GetCategories()
+        public Page<CategoryModel> GetCategories(int start, int count)
         {
-            return _context.Categories.AsNoTracking().ToList();
+            IQueryable<Category> query = _context.Categories.AsNoTracking();
+
+            return new Page<CategoryModel> { CurrentPage = start, Items = query.Page(start, count).Select(x => new CategoryModel(x)).ToList(), PageSize = count, Total = query.Count() };
         }
 
-        public void AddCategory(string category)
+        public CategoryModel AddCategory(string category)
         {
-            _context.Categories.Add(new Category { Name = category });
+            Category addedCategory = new Category { Name = category };
+            _context.Categories.Add(addedCategory);
             _context.SaveChanges();
+            _context.Entry(addedCategory).Reload();
+            return new CategoryModel(addedCategory);
         }
 
-        public void DisableCategory(int categoryId)
+        public CategoryModel? DisableCategory(int categoryId)
         {
             Category? category = _context.Categories.FirstOrDefault(x => x.CategoryId == categoryId);
             if (category == null)
-                return;
+                return null;
 
             category.Disabled = !category.Disabled;
             _context.SaveChanges();
+
+            return new CategoryModel(category);
         }
     }
 }

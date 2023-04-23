@@ -9,7 +9,6 @@ namespace ServiceLayer.DTOs
 {
     public class OrderDTO
     {
-        public int OrderId { get; set; }
         public DateTime PurchaseDate { get; set; }
         public int CustomerId { get; set; }
         public List<OrderProductDTO> OrdersProducts { get; set; }

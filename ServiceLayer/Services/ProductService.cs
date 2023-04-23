@@ -1,9 +1,11 @@
 ﻿using DataLayer;
 using DataLayer.Entities;
+using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.EntityFrameworkCore;
 using ServiceLayer.DTOs;
 using ServiceLayer.Enums;
 using ServiceLayer.ExtensionMethods;
+using ServiceLayer.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -22,15 +24,32 @@ namespace ServiceLayer.Services
             _context = context;
         }
 
-        public void AddProduct(ProductDTO product)
+        public ProductModel AddProduct(ProductDTO product, byte[] imageBytes)
         {
-            _context.Products.Add(new Product { Name = product.Name, CategoryId = product.CategoryId, ManufacturerId = product.ManufacturerId, Price = product.Price, Description = product.Description, Image = product.Image != null ? new Image { ImageData = product.Image } : null });
+            Product addedProduct = new Product
+            {
+                Name = product.Name,
+                CategoryId = product.CategoryId,
+                ManufacturerId = product.ManufacturerId,
+                Price = product.Price,
+                Description = product.Description,
+                Image = imageBytes != null ? new Image { ImageData = imageBytes} : null
+            };
+            _context.Products.Add(addedProduct);
+
             _context.SaveChanges();
+            _context.Entry(addedProduct).Reload();
+            _context.Entry(addedProduct).Reference(x => x.Category).Load();
+            _context.Entry(addedProduct).Reference(x => x.Manufacturer).Load();
+            return new ProductModel(addedProduct);
         }
 
-        public Page<Product> GetProducts(int page = 1, int count = 10, string? search = null, int? categoryId = null, int[]? manufacturerIds = null, OrderByEnum? orderBy = OrderByEnum.NameAsc)
+        public Page<ProductModel> GetProducts(int page = 1, int count = 10, string? search = null, int? categoryId = null, int[]? manufacturerIds = null, OrderByEnum? orderBy = OrderByEnum.NameAsc)
         {
-            IQueryable<Product> query = _context.Products.Include(x => x.Manufacturer).Include(x => x.Category).Include(x => x.Image).AsNoTracking();
+            IQueryable<Product> query = _context.Products.Include(x => x.Manufacturer)
+                                                         .Include(x => x.Category)
+                                                         .Include(x => x.Image)
+                                                         .AsNoTracking();
 
             if (!string.IsNullOrWhiteSpace(search))
             {
@@ -61,33 +80,49 @@ namespace ServiceLayer.Services
                     break;
             }
 
-            return new Page<Product>() { Items = query.Page(page, count).ToList(), Total = query.Count(), CurrentPage = page, PageSize = count };
+            return new Page<ProductModel>() { Items = query.Page(page, count).Select(x => new ProductModel(x)).ToList(), Total = query.Count(), CurrentPage = page, PageSize = count };
         }
 
-        public Product? GetProduct(int productId)
+        public ProductModel? GetProduct(int productId)
         {
-            return _context.Products.Include(x => x.Manufacturer).Include(x => x.Category).Include(x => x.Image).AsNoTracking().FirstOrDefault(x => x.ProductId == productId);
+            return _context.Products.Where(x => x.ProductId == productId)
+                                    .Include(x => x.Manufacturer)
+                                    .Include(x => x.Category)
+                                    .Include(x => x.Image)
+                                    .AsNoTracking()
+                                    .Select(x => new ProductModel(x))
+                                    .FirstOrDefault();
         }
 
-        public void EditProduct(Product newProduct)
+        public ProductModel? EditProduct(int id, JsonPatchDocument<Product> newProduct)
         {
-            if (!_context.Products.Any(x => x.ProductId == newProduct.ProductId))
-                return;
+            Product? product = _context.Products.Include(x => x.Manufacturer)
+                                                .Include(x => x.Category)
+                                                .FirstOrDefault(x => x.ProductId == id);
+            if (product == null)
+                return null;
 
-            _context.Products.Update(newProduct);
+            newProduct.ApplyTo(product);
+            
+            _context.Products.Update(product);
 
             _context.SaveChanges();
+            return new ProductModel(product);
         }
 
-        public void DisableProduct(int productId)
+        public ProductModel? DisableProduct(int productId)
         {
-            Product? product = _context.Products.FirstOrDefault(x => x.ProductId == productId);
+            Product? product = _context.Products.Include(x => x.Manufacturer)
+                                                .Include(x => x.Category)
+                                                .FirstOrDefault(x => x.ProductId == productId);
             if (product == null)
-                return;
+                return null;
 
             product.Disabled = !product.Disabled;
 
             _context.SaveChanges();
+
+            return new ProductModel(product);
         }
     }
 }
