@@ -8,7 +8,7 @@ namespace ServiceLayer.Services
 {
     public interface IProductService
     {
-        ProductModel AddProduct(ProductDTO product, byte[] byteImage);
+        ProductModel AddProduct(ProductDTO product, byte[]? byteImage);
         ProductModel? DisableProduct(int productId);
         ProductModel? EditProduct(int id, JsonPatchDocument<Product> newProduct);
         ProductModel? GetProduct(int productId);

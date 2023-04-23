@@ -29,9 +29,13 @@ namespace WebApi.Controllers
         [HttpPost]
         public IActionResult AddProduct([FromQuery] ProductDTO product, IFormFile? image)
         {
-            using MemoryStream ms = new MemoryStream();
-            image?.CopyTo(ms);
-            byte[] bytes = ms.ToArray();
+            byte[]? bytes = null;
+            if (image != null)
+            {
+                using MemoryStream ms = new MemoryStream();
+                image.CopyTo(ms);
+                bytes = ms.ToArray();
+            }
 
             ProductModel? productModel = _productService.AddProduct(product, bytes);
 

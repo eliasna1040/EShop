@@ -24,7 +24,7 @@ namespace ServiceLayer.Services
             _context = context;
         }
 
-        public ProductModel AddProduct(ProductDTO product, byte[] imageBytes)
+        public ProductModel AddProduct(ProductDTO product, byte[]? imageBytes)
         {
             Product addedProduct = new Product
             {
