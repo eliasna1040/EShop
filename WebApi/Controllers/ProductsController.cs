@@ -29,22 +29,23 @@ namespace WebApi.Controllers
         [HttpPost]
         public IActionResult AddProduct([FromQuery] ProductDTO product, IFormFile? image)
         {
-            byte[]? bytes = null;
-            if (image != null)
+            try
             {
-                using MemoryStream ms = new MemoryStream();
-                image.CopyTo(ms);
-                bytes = ms.ToArray();
+                byte[]? bytes = null;
+                if (image != null)
+                {
+                    using MemoryStream ms = new MemoryStream();
+                    image.CopyTo(ms);
+                    bytes = ms.ToArray();
+                }
+
+                return Ok(_productService.AddProduct(product, bytes));
             }
-
-            ProductModel? productModel = _productService.AddProduct(product, bytes);
-
-            if (productModel != null)
+            catch (Exception)
             {
-                return Ok(productModel);
-            }
 
-            return BadRequest();
+                return BadRequest();
+            }
         }
 
         [HttpGet("{id}")]
@@ -62,26 +63,27 @@ namespace WebApi.Controllers
         [HttpPatch("{id}")]
         public IActionResult EditProduct(int id, [FromBody] JsonPatchDocument<Product> product)
         {
-            ProductModel? returnedProduct = _productService.EditProduct(id, product);
-
-            if (returnedProduct != null)
+            try
             {
-                return Ok(returnedProduct);
+                return Ok(_productService.EditProduct(id, product));
             }
-
-            return BadRequest();
+            catch (Exception)
+            {
+                return BadRequest();
+            }
         }
 
         [HttpPut("{id}")]
         public IActionResult DisableProduct(int id)
         {
-            ProductModel? product = _productService.DisableProduct(id);
-            if (product != null)
+            try
             {
-                return Ok(product);
+                return Ok(_productService.DisableProduct(id));
             }
-
-            return BadRequest();
+            catch (Exception)
+            {
+                return BadRequest();
+            }
         }
     }
 }

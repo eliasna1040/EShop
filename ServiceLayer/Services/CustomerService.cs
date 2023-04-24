@@ -26,7 +26,7 @@ namespace ServiceLayer.Services
         public CustomerModel? GetCustomer(int id)
         {
             return _context.Customers.Where(x => x.CustomerId == id)
-                                     .Include(x => x.Orders).ThenInclude(x => x.OrdersProducts).ThenInclude(x => x.Product)
+                                     .Include(x => x.Orders)
                                      .AsNoTracking()
                                      .Select(x => new CustomerModel(x))
                                      .FirstOrDefault();

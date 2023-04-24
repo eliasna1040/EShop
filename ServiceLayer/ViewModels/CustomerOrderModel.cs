@@ -21,7 +21,7 @@ namespace ServiceLayer.ViewModels
             PurchaseDate = order.PurchaseDate;
             Disabled = order.Disabled;
 
-            Products = order.OrdersProducts.Select(x => new OrderProductModel(x.Product, x.Amount)).ToList();
+            Products = order.OrdersProducts?.Select(x => new OrderProductModel(x.Product, x.Amount)).ToList();
         }
     }
 }

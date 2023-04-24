@@ -34,31 +34,34 @@ namespace WebApi.Controllers
                 return Ok(customer);
             }
 
-            return BadRequest();
+            return NotFound();
         }
 
         [HttpPost]
         public IActionResult AddCustomer(CustomerDTO customer)
         {
-            CustomerModel? addedCustomer = _customerService.AddCustomer(customer);
-            if (addedCustomer != null)
+            try
             {
-                return Ok(addedCustomer);
+                return Ok(_customerService.AddCustomer(customer));
             }
-
-            return BadRequest();
+            catch (Exception)
+            {
+                return BadRequest();
+            }
         }
 
         [HttpPatch("{id}")]
-        public IActionResult EditCustomer(int id, [FromBody]JsonPatchDocument<Customer> newCustomer)
+        public IActionResult EditCustomer(int id, [FromBody] JsonPatchDocument<Customer> newCustomer)
         {
-            CustomerModel? customer = _customerService.EditCustomer(id, newCustomer);
-            if (customer != null)
+            try
             {
-                return Ok(customer);
+                return Ok(_customerService.EditCustomer(id, newCustomer));
+            }
+            catch (Exception)
+            {
+                return BadRequest();
             }
 
-            return BadRequest();
         }
 
         [HttpGet("{email}/login")]
@@ -70,7 +73,7 @@ namespace WebApi.Controllers
                 return Ok(user);
             }
 
-            return BadRequest();
+            return NotFound();
         }
     }
 }

@@ -32,31 +32,33 @@ namespace WebApi.Controllers
                 return Ok(order);
             }
 
-            return BadRequest();
+            return NotFound();
         }
 
         [HttpPost]
         public IActionResult CreateOrder(OrderDTO order)
         {
-            OrderModel? addedOrder = _orderService.CreateOrder(order);
-            if (addedOrder != null)
+            try
             {
-                return Ok(addedOrder);
+                return Ok(_orderService.CreateOrder(order));
             }
-
-            return BadRequest();
+            catch (Exception)
+            {
+                return BadRequest();
+            }
         }
 
         [HttpPut("{id}")]
         public IActionResult DisableOrder(int id)
         {
-            OrderModel? order = _orderService.DisableOrder(id);
-            if (order != null)
+            try
             {
-                return Ok(order);
+                return Ok(_orderService.DisableOrder(id));
             }
-
-            return BadRequest();
+            catch (Exception)
+            {
+                return BadRequest();
+            }
         }
     }
 }

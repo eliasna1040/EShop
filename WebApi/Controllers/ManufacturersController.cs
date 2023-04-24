@@ -25,25 +25,27 @@ namespace WebApi.Controllers
         [HttpPost]
         public IActionResult AddManufacturer(string manufacturer)
         {
-            ManufacturerModel? addedManufacturer = _manufacturerService.AddManufacturer(manufacturer);
-            if (addedManufacturer != null)
+            try
             {
-                return Ok(addedManufacturer);
+                return Ok(_manufacturerService.AddManufacturer(manufacturer));
             }
-
-            return BadRequest();
+            catch (Exception)
+            {
+                return BadRequest();
+            }
         }
 
         [HttpPut("{id}")]
         public IActionResult DisableManufacturer(int id)
         {
-            ManufacturerModel? manufacturer = _manufacturerService.DisableManufacturer(id);
-            if (manufacturer != null)
+            try
             {
-                return Ok(manufacturer);
+                return Ok(_manufacturerService.DisableManufacturer(id));
             }
-
-            return BadRequest();
+            catch (Exception)
+            {
+                return BadRequest();
+            }
         }
     }
 }

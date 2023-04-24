@@ -26,25 +26,27 @@ namespace WebApi.Controllers
         [HttpPost]
         public IActionResult AddCategory(string category)
         {
-            CategoryModel? addedCategory = _categoryService.AddCategory(category);
-            if (addedCategory != null)
+            try
             {
-                return Ok(addedCategory);
+                return Ok(_categoryService.AddCategory(category));
             }
-
-            return BadRequest();
+            catch (Exception)
+            {
+                return BadRequest();
+            }
         }
 
         [HttpPut("{id}")]
         public IActionResult DisableCategory(int id)
         {
-            CategoryModel? category = _categoryService.DisableCategory(id);
-            if (category != null)
+            try
             {
-                return Ok(category);
+                return Ok(_categoryService.DisableCategory(id));
             }
-
-            return BadRequest();
+            catch (Exception)
+            {
+                return BadRequest();
+            }
         }
     }
 }
