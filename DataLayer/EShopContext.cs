@@ -38,7 +38,7 @@ namespace DataLayer
 
             modelBuilder.Entity<Category>().HasData(new Category { Name = "bil", CategoryId = 1 });
             modelBuilder.Entity<Manufacturer>().HasData(new Manufacturer { Name = "Mercedes-Benz", ManufacturerId = 1 });
-            modelBuilder.Entity<Image>().HasData(new Image { ImageData = File.ReadAllBytes(@"C:\Users\c98101ena\OneDrive - Ejner Hessel A S\Pictures\Skærmbillede 2023-04-05 203606.png"), ImageId = 1 });
+            //modelBuilder.Entity<Image>().HasData(new Image { ImageData = File.ReadAllBytes(@"C:\Users\c98101ena\OneDrive - Ejner Hessel A S\Pictures\Skærmbillede 2023-04-05 203606.png"), ImageId = 1 });
             modelBuilder.Entity<Product>().HasData(new List<Product>
             { 
                 new Product { ProductId = 2, Name = "g63 amg", CategoryId = 1, Description = "en bil", ManufacturerId = 1, Price = 2000000 }, 

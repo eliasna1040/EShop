@@ -8,6 +8,6 @@ namespace ServiceLayer.Services
     {
         CategoryModel AddCategory(string category);
         CategoryModel? DisableCategory(int categoryId);
-        Page<CategoryModel> GetCategories(int start, int count);
+        List<CategoryModel> GetCategories();
     }
 }

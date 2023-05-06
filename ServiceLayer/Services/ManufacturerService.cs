@@ -31,10 +31,9 @@ namespace ServiceLayer.Services
             return new ManufacturerModel(addedManufacturer);
         }
 
-        public Page<ManufacturerModel> GetManufacturers(int start, int count)
+        public List<ManufacturerModel> GetManufacturers()
         {
-            IQueryable<Manufacturer> query = _context.Manufacturers.AsNoTracking();
-            return new Page<ManufacturerModel> { CurrentPage = start, PageSize = count, Items = query.Page(start, count).Select(x => new ManufacturerModel(x)).ToList(), Total = query.Count() };
+            return _context.Manufacturers.AsNoTracking().Select(x => new ManufacturerModel(x)).ToList();
         }
 
         public List<ManufacturerModel> GetManufacturersFromSearch(string? search)

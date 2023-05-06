@@ -17,9 +17,9 @@ namespace WebApi.Controllers
         }
 
         [HttpGet]
-        public IActionResult GetManufacturers(int start = 1, int count = 10)
+        public IActionResult GetManufacturers()
         {
-            return Ok(_manufacturerService.GetManufacturers(start, count));
+            return Ok(_manufacturerService.GetManufacturers());
         }
 
         [HttpPost]

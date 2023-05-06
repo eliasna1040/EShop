@@ -20,6 +20,7 @@ namespace ServiceLayer.DTOs
         public string Description { get; set; }
         [Required(ErrorMessage = "Feltet skal udfyldes")]
         public double Price { get; set; }
+        public byte[]? Image { get; set; }
         [Required(ErrorMessage = "Feltet skal udfyldes")]
         public int CategoryId { get; set; }
         [Required(ErrorMessage = "Feltet skal udfyldes")]

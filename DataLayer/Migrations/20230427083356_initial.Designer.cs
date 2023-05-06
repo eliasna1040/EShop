@@ -12,15 +12,15 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DataLayer.Migrations
 {
     [DbContext(typeof(EShopContext))]
-    [Migration("20230419092358_kaljwd")]
-    partial class kaljwd
+    [Migration("20230427083356_initial")]
+    partial class initial
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "7.0.4")
+                .HasAnnotation("ProductVersion", "7.0.5")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
@@ -115,13 +115,6 @@ namespace DataLayer.Migrations
                     b.HasKey("ImageId");
 
                     b.ToTable("Images");
-
-                    b.HasData(
-                        new
-                        {
-                            ImageId = 1,
-                            ImageData = new byte[] { 137, 80, 78, 71, 13, 10, 26, 10, 0, 0, 0, 13, 73, 72, 68, 82, 0, 0, 0, 197, 0, 0, 0, 177, 8, 6, 0, 0, 0, 116, 139, 121, 39, 0, 0, 0, 1, 115, 82, 71, 66, 0, 174, 206, 28, 233, 0, 0, 0, 4, 103, 65, 77, 65, 0, 0, 177, 143, 11, 252, 97, 5, 0, 0, 0, 9, 112, 72, 89, 115, 0, 0, 18, 116, 0, 0, 18, 116, 1, 222, 102, 31, 120, 0, 0, 1, 199, 73, 68, 65, 84, 120, 94, 237, 211, 65, 13, 128, 64, 16, 192, 192, 5, 35, 235, 95, 37, 124, 46, 36, 84, 195, 204, 167, 10, 122, 237, 238, 51, 192, 231, 62, 5, 14, 83, 64, 152, 2, 194, 20, 16, 166, 128, 48, 5, 132, 41, 32, 76, 1, 97, 10, 8, 83, 64, 152, 2, 194, 20, 16, 166, 128, 48, 5, 132, 41, 32, 76, 1, 97, 10, 8, 83, 64, 152, 2, 194, 20, 16, 166, 128, 48, 5, 132, 41, 32, 76, 1, 97, 10, 8, 83, 64, 152, 2, 194, 20, 16, 166, 128, 48, 5, 132, 41, 32, 76, 1, 97, 10, 8, 83, 64, 152, 2, 194, 20, 16, 166, 128, 48, 5, 132, 41, 32, 76, 1, 97, 10, 8, 83, 64, 152, 2, 194, 20, 16, 166, 128, 48, 5, 132, 41, 32, 76, 1, 97, 10, 8, 83, 64, 152, 2, 194, 20, 16, 166, 128, 48, 5, 132, 41, 32, 76, 1, 97, 10, 8, 83, 64, 152, 2, 194, 20, 16, 166, 128, 48, 5, 132, 41, 32, 76, 1, 97, 10, 8, 83, 64, 152, 2, 194, 20, 16, 166, 128, 48, 5, 132, 41, 32, 76, 1, 97, 10, 8, 83, 64, 152, 2, 194, 20, 16, 166, 128, 48, 5, 132, 41, 32, 76, 1, 97, 10, 8, 83, 64, 152, 2, 194, 20, 16, 166, 128, 48, 5, 132, 41, 32, 76, 1, 97, 10, 8, 83, 64, 152, 2, 194, 20, 16, 166, 128, 48, 5, 132, 41, 32, 76, 1, 97, 10, 8, 83, 64, 152, 2, 194, 20, 16, 166, 128, 48, 5, 132, 41, 32, 76, 1, 97, 10, 8, 83, 64, 152, 2, 194, 20, 16, 166, 128, 48, 5, 132, 41, 32, 76, 1, 97, 10, 8, 83, 64, 152, 2, 194, 20, 16, 166, 128, 48, 5, 132, 41, 32, 76, 1, 97, 10, 8, 83, 64, 152, 2, 194, 20, 16, 166, 128, 48, 5, 132, 41, 32, 76, 1, 97, 10, 8, 83, 64, 152, 2, 194, 20, 16, 166, 128, 48, 5, 132, 41, 32, 76, 1, 97, 10, 8, 83, 64, 152, 2, 194, 20, 16, 166, 128, 48, 5, 132, 41, 32, 76, 1, 97, 10, 8, 83, 64, 152, 2, 194, 20, 16, 166, 128, 48, 5, 132, 41, 32, 76, 1, 97, 10, 8, 83, 64, 152, 2, 194, 20, 16, 166, 128, 48, 5, 132, 41, 32, 76, 1, 97, 10, 8, 83, 64, 152, 2, 194, 20, 16, 166, 128, 48, 5, 132, 41, 32, 76, 1, 97, 10, 8, 83, 64, 152, 2, 194, 20, 16, 166, 128, 48, 5, 132, 41, 32, 76, 1, 63, 51, 47, 28, 63, 2, 190, 66, 109, 163, 82, 0, 0, 0, 0, 73, 69, 78, 68, 174, 66, 96, 130 }
-                        });
                 });
 
             modelBuilder.Entity("DataLayer.Entities.Manufacturer", b =>
@@ -159,9 +152,6 @@ namespace DataLayer.Migrations
                         .HasColumnType("int");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("OrderId"));
-
-                    b.Property<int>("Amount")
-                        .HasColumnType("int");
 
                     b.Property<int>("CustomerId")
                         .HasColumnType("int");
@@ -225,8 +215,8 @@ namespace DataLayer.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<double>("Price")
-                        .HasColumnType("float");
+                    b.Property<decimal>("Price")
+                        .HasColumnType("decimal(8:2)");
 
                     b.HasKey("ProductId");
 
@@ -249,7 +239,7 @@ namespace DataLayer.Migrations
                             Disabled = false,
                             ManufacturerId = 1,
                             Name = "g63 amg",
-                            Price = 2000000.0
+                            Price = 2000000m
                         },
                         new
                         {
@@ -259,7 +249,7 @@ namespace DataLayer.Migrations
                             Disabled = false,
                             ManufacturerId = 1,
                             Name = "g63 amg",
-                            Price = 2000000.0
+                            Price = 2000000m
                         },
                         new
                         {
@@ -269,7 +259,7 @@ namespace DataLayer.Migrations
                             Disabled = false,
                             ManufacturerId = 1,
                             Name = "g63 amg",
-                            Price = 2000000.0
+                            Price = 2000000m
                         },
                         new
                         {
@@ -279,7 +269,7 @@ namespace DataLayer.Migrations
                             Disabled = false,
                             ManufacturerId = 1,
                             Name = "g63 amg",
-                            Price = 2000000.0
+                            Price = 2000000m
                         },
                         new
                         {
@@ -289,7 +279,7 @@ namespace DataLayer.Migrations
                             Disabled = false,
                             ManufacturerId = 1,
                             Name = "g63 amg",
-                            Price = 2000000.0
+                            Price = 2000000m
                         },
                         new
                         {
@@ -299,7 +289,7 @@ namespace DataLayer.Migrations
                             Disabled = false,
                             ManufacturerId = 1,
                             Name = "g63 amg",
-                            Price = 2000000.0
+                            Price = 2000000m
                         },
                         new
                         {
@@ -309,7 +299,7 @@ namespace DataLayer.Migrations
                             Disabled = false,
                             ManufacturerId = 1,
                             Name = "g63 amg",
-                            Price = 2000000.0
+                            Price = 2000000m
                         },
                         new
                         {
@@ -319,7 +309,7 @@ namespace DataLayer.Migrations
                             Disabled = false,
                             ManufacturerId = 1,
                             Name = "g63 amg",
-                            Price = 2000000.0
+                            Price = 2000000m
                         },
                         new
                         {
@@ -329,7 +319,7 @@ namespace DataLayer.Migrations
                             Disabled = false,
                             ManufacturerId = 1,
                             Name = "g63 amg",
-                            Price = 2000000.0
+                            Price = 2000000m
                         },
                         new
                         {
@@ -339,7 +329,7 @@ namespace DataLayer.Migrations
                             Disabled = false,
                             ManufacturerId = 1,
                             Name = "g63 amg",
-                            Price = 2000000.0
+                            Price = 2000000m
                         });
                 });
 

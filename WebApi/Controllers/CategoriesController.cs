@@ -18,9 +18,9 @@ namespace WebApi.Controllers
         }
 
         [HttpGet]
-        public IActionResult GetCategories(int start = 1, int count = 10)
+        public IActionResult GetCategories()
         {
-            return Ok(_categoryService.GetCategories(start, count));
+            return Ok(_categoryService.GetCategories());
         }
 
         [HttpPost]

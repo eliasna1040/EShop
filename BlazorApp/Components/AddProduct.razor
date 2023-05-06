@@ -1,0 +1,89 @@
+﻿@using BlazorApp.Models;
+@inject HttpClient client
+
+<EditForm Model="@product" OnValidSubmit="@HandleSubmit">
+    <DataAnnotationsValidator />
+    <div class="mb-2">
+        <label class="form-label">Produkt navn</label>
+        <InputText class="form-control" id="name" @bind-Value="product.Name" />
+        <ValidationMessage For="() => product.Name" />
+    </div>
+    <div class="mb-2">
+        <label class="form-label">Pris</label>
+        <InputNumber class="form-control" id="name" @bind-Value="product.Price" />
+        <ValidationMessage For="() => product.Price" />
+    </div>
+    <div class="row gy-3 mb-2">
+        <div class="col-6">
+            <label class="form-label">Kategori</label>
+            <InputSelect @bind-Value="product.CategoryId" class="form-select col-6">
+                <option value="">Vælg kategori</option>
+                @if (categories != null)
+                {
+                    @foreach (var item in categories)
+                    {
+                        <option value="@item.CategoryId">@item.Name</option>
+                    }
+                }
+            </InputSelect>
+        <ValidationMessage For="() => product.CategoryId" />
+        </div>
+        <div class="col-6">
+            <label class="form-label">Fabrikat</label>
+            <InputSelect @bind-Value="product.ManufacturerId" CurrentValue="" class="form-select">
+                <option value="">Vælg fabrikat</option>
+                @if (manufacturers != null)
+                {
+                    @foreach (var item in manufacturers)
+                    {
+                        <option value="@item.ManufacturerId">@item.Name</option>
+                    }
+                }
+            </InputSelect>
+        <ValidationMessage For="() => product.ManufacturerId" />
+        </div>
+    </div>
+    <div class="mb-2">
+        <label class="form-label">Produkt beskrivelse</label>
+        <InputTextArea class="form-control" id="name" @bind-Value="product.Description" />
+        <ValidationMessage For="() => product.Description" />
+    </div>
+    <div class="mb-2">
+        <label class="form-label">Billede</label>
+        <InputFile class="form-control" OnChange="@FileSelect" />
+    </div>
+    <button type="submit" class="btn btn-primary float-end mt-2">Tilføj</button>
+</EditForm>
+
+
+@code {
+    private AddProductModel product = new();
+    private IBrowserFile? image = default;
+    private List<CategoryModel>? categories = new();
+    private List<ManufacturerModel>? manufacturers = new();
+    [CascadingParameter] BlazoredModalInstance BlazoredModal { get; set; } = default!;
+
+    private void FileSelect(InputFileChangeEventArgs e)
+    {
+        image = e.File;
+    }
+
+    protected async override Task OnInitializedAsync()
+    {
+        categories = await client.GetFromJsonAsync<List<CategoryModel>>("api/categories");
+        manufacturers = await client.GetFromJsonAsync<List<ManufacturerModel>>("api/manufacturers");
+    }
+
+    private async Task HandleSubmit()
+    {
+        if (image != null)
+        {
+            byte[] bytes = new byte[image.Size];
+            await image.OpenReadStream().ReadAsync(bytes);
+            product.Image = bytes;
+        }
+
+        await client.PostAsJsonAsync("api/Products", product);
+        await BlazoredModal.CloseAsync(ModalResult.Ok(product));
+    }
+}

@@ -21,11 +21,9 @@ namespace ServiceLayer.Services
             _context = context;
         }
 
-        public Page<CategoryModel> GetCategories(int start, int count)
+        public List<CategoryModel> GetCategories()
         {
-            IQueryable<Category> query = _context.Categories.AsNoTracking();
-
-            return new Page<CategoryModel> { CurrentPage = start, Items = query.Page(start, count).Select(x => new CategoryModel(x)).ToList(), PageSize = count, Total = query.Count() };
+            return _context.Categories.AsNoTracking().Select(x => new CategoryModel(x)).ToList();
         }
 
         public CategoryModel AddCategory(string category)

@@ -10,7 +10,7 @@ namespace ServiceLayer.Services
         ManufacturerModel AddManufacturer(string manufacturer);
         ManufacturerModel? DisableManufacturer(int manufaturerId);
         ManufacturerModel? EditManufacturer(int id, JsonPatchDocument<Manufacturer> newManufacturer);
-        Page<ManufacturerModel> GetManufacturers(int start, int count);
+        List<ManufacturerModel> GetManufacturers();
         List<ManufacturerModel> GetManufacturersFromSearch(string? search);
     }
 }

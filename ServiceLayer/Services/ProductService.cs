@@ -24,7 +24,7 @@ namespace ServiceLayer.Services
             _context = context;
         }
 
-        public ProductModel AddProduct(ProductDTO product, byte[]? imageBytes)
+        public void AddProduct(ProductDTO product)
         {
             Product addedProduct = new Product
             {
@@ -33,15 +33,11 @@ namespace ServiceLayer.Services
                 ManufacturerId = product.ManufacturerId,
                 Price = product.Price,
                 Description = product.Description,
-                Image = imageBytes != null ? new Image { ImageData = imageBytes} : null
+                Image = product.Image != null ? new Image { ImageData = product.Image } : null
             };
             _context.Products.Add(addedProduct);
 
             _context.SaveChanges();
-            _context.Entry(addedProduct).Reload();
-            _context.Entry(addedProduct).Reference(x => x.Category).Load();
-            _context.Entry(addedProduct).Reference(x => x.Manufacturer).Load();
-            return new ProductModel(addedProduct);
         }
 
         public Page<ProductModel> GetProducts(int page = 1, int count = 10, string? search = null, int? categoryId = null, int[]? manufacturerIds = null, OrderByEnum? orderBy = OrderByEnum.NameAsc)

@@ -1,5 +1,4 @@
 ﻿using DataLayer.Entities;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
 using ServiceLayer.DTOs;
@@ -27,19 +26,12 @@ namespace WebApi.Controllers
         }
 
         [HttpPost]
-        public IActionResult AddProduct([FromQuery] ProductDTO product, IFormFile? image)
+        public IActionResult AddProduct(ProductDTO product)
         {
             try
             {
-                byte[]? bytes = null;
-                if (image != null)
-                {
-                    using MemoryStream ms = new MemoryStream();
-                    image.CopyTo(ms);
-                    bytes = ms.ToArray();
-                }
-
-                return Ok(_productService.AddProduct(product, bytes));
+                _productService.AddProduct(product);
+                return Ok();
             }
             catch (Exception)
             {
