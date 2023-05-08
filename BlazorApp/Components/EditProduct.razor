@@ -22,11 +22,18 @@
                 {
                     @foreach (var item in categories)
                     {
-                        <option value="@item.CategoryId">@item.Name</option>
+                        @if (item.CategoryId == Product.CategoryId)
+                        {
+                            <option value="@item.CategoryId" selected>@item.Name</option>
+                        }
+                        else
+                        {
+                            <option value="@item.CategoryId">@item.Name</option>
+                        }
                     }
                 }
             </InputSelect>
-        <ValidationMessage For="() => product.CategoryId" />
+            <ValidationMessage For="() => product.CategoryId" />
         </div>
         <div class="col-6">
             <label class="form-label">Fabrikat</label>
@@ -40,7 +47,7 @@
                     }
                 }
             </InputSelect>
-        <ValidationMessage For="() => product.ManufacturerId" />
+            <ValidationMessage For="() => product.ManufacturerId" />
         </div>
     </div>
     <div class="mb-2">
@@ -52,5 +59,11 @@
         <label class="form-label">Billede</label>
         <InputFile class="form-control" OnChange="@FileSelect" />
     </div>
-    <button type="submit" class="btn btn-primary float-end mt-2">Tilføj</button>
+    <div class="mb-2">
+        <label class="form-label d-block">Deaktiver</label>
+        <InputCheckbox class="form-check-input" @bind-Value="product.Disabled"></InputCheckbox>
+        <ValidationMessage For="() => product.Disabled" />
+    </div>
+    <button type="submit" class="btn btn-primary float-end mt-2">Gem</button>
 </EditForm>
+

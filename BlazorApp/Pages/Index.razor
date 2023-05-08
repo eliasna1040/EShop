@@ -5,10 +5,29 @@
 
 <PageTitle>Index</PageTitle>
 
-@if (Products != null)
+<button class="btn btn-primary mb-4" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasExample" aria-controls="offcanvasExample">
+    Kategorier
+</button>
+
+<div class="offcanvas offcanvas-start" tabindex="-1" id="offcanvasExample" aria-labelledby="offcanvasExampleLabel">
+    <div class="offcanvas-header">
+        <h5 class="offcanvas-title" id="offcanvasExampleLabel">Kategorier</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+    </div>
+    <div class="offcanvas-body">
+        @foreach (var item in categories)
+        {
+            <div>
+                <button class="btn @(item.CategoryId == category ? "text-primary" : null)" @onclick="() => ChangeCategory(item.CategoryId)"><h3>@item.Name</h3></button>
+            </div>
+        }
+    </div>
+</div>
+
+@if (products.Items != null)
 {
     <div class="row gy-4">
-        @foreach (ProductModel product in Products.Items)
+        @foreach (ProductModel product in products.Items)
         {
             <div class="col-3">
                 <div class="card">
@@ -26,13 +45,45 @@
             </div>
         }
     </div>
+    <div>
+        <Pagination Parameters="parameters" SelectedPage="SelectedPage"></Pagination>
+    </div>
 }
 
-@code{
-    private Page<ProductModel>? Products { get; set; }
+@code {
+    private Page<ProductModel> products = new();
+    private Parameters parameters = new();
+    private int? category = null;
+    private List<CategoryModel> categories = new();
 
     protected async override Task OnInitializedAsync()
     {
-        Products = await client.GetFromJsonAsync<Page<ProductModel>>("api/products?count=100");
+        categories = await client.GetFromJsonAsync<List<CategoryModel>>("api/categories");
+        await GetProducts();
     }
+
+    private async Task GetProducts()
+    {
+        products = (await client.GetFromJsonAsync<Page<ProductModel>>($"api/products?page={parameters.CurrentPage}&categoryId={category}")) ?? new Page<ProductModel>();
+        parameters = new Parameters { CurrentPage = products.CurrentPage, TotalPages = products.PageCount };
+    }
+
+    private async Task SelectedPage(int[] page)
+    {
+        parameters.CurrentPage = page[0];
+        parameters.PageSize = page[1];
+        await GetProducts();
+    }
+
+    private async Task ChangeCategory(int? categoryId)
+    {
+        category = categoryId;
+        await GetProducts();
+    }
+
+    //private async Task OnValueChanged(int categoryId)
+    //{
+    //    category = categoryId;
+    //    await GetProducts();
+    //}
 }

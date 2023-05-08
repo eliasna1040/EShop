@@ -53,7 +53,7 @@ namespace WebApi.Controllers
         }
 
         [HttpPatch("{id}")]
-        public IActionResult EditProduct(int id, [FromBody] JsonPatchDocument<Product> product)
+        public IActionResult EditProduct(int id, JsonPatchDocument<Product> product)
         {
             try
             {

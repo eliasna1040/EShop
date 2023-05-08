@@ -4,7 +4,7 @@
 @inject IModalService modal
 @inject HttpClient client
 
-<button @onclick="@ShowModal" class="btn btn-primary">Tilføj produkt</button>
+<button @onclick="@AddShowModal" class="btn btn-primary">Tilføj produkt</button>
 
 <table class="table table-striped table-hover">
     <thead>
@@ -20,7 +20,7 @@
         </tr>
     </thead>
     <tbody>
-        @if (Products != null)
+        @if (Products.Items != null)
         {
             @foreach (var product in Products.Items)
             {
@@ -34,9 +34,8 @@
                     <td>@(!product.Disabled)</td>
                     <td>
                         <div class="d-flex justify-content-center gap-3">
-                            <input type="hidden" value="@product.ProductId" />
-                            <a class="btn btn-warning"><i class="bi bi-pencil-square"></i></a>
-                            <button class="btn btn-danger"><i class="bi bi-trash-fill"></i></button>
+                            <button class="btn btn-warning" @onclick="() => EditShowModal(product)"><i class="bi bi-pencil-square"></i></button>
+                            <button @onclick="() => DisableProduct(product.ProductId.Value)" class="btn btn-danger"><i class="bi bi-trash-fill"></i></button>
                         </div>
                     </td>
                 </tr>
@@ -44,36 +43,5 @@
         }
     </tbody>
 </table>
-<Pagination TotalPages="Products.PageCount" CurrentPage="Products.CurrentPage" SelectedPage="SelectedPage"></Pagination>
 
-@code {
-    private Page<ProductModel> Products = new();
-    private Parameters Parameters = new();
-
-    protected async override Task OnInitializedAsync()
-    {
-        await GetProducts();
-    }
-
-    private async Task SelectedPage(int page)
-    {
-        Parameters.CurrentPage = page;
-        await GetProducts();
-    }
-
-    private async Task GetProducts()
-    {
-        Products = (await client.GetFromJsonAsync<Page<ProductModel>>($"api/products?page={Parameters.CurrentPage}")) ?? new Page<ProductModel>();
-    }
-
-    private async Task ShowModal()
-    {
-        var modalReference = modal.Show<AddProduct>("Tilføj produkt");
-        var result = await modalReference.Result;
-
-        if (result.Confirmed)
-        {
-            await OnInitializedAsync();
-        }
-    }
-}
+<Pagination Parameters="Parameters" SelectedPage="SelectedPage"></Pagination>

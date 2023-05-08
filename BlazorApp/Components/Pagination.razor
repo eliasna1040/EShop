@@ -1,19 +1,17 @@
 ﻿<nav class="d-flex justify-content-between mt-2">
     <ul class="pagination">
-        <li class="page-item @(CurrentPage <= 1 ? "disabled" : null)" @onclick="() => OnSelectedPage(CurrentPage - 1)"><span class="page-link" style="cursor: pointer">Forrige</span></li>
-        @for (int i = 1; i <= TotalPages; i++)
+        @foreach (var item in _links)
         {
-            <li class="page-item @(CurrentPage == i ? "active" : null)" @onclick="() => OnSelectedPage(i)"><span class="page-link" style="cursor: pointer">@i</span></li>
+            <li class="page-item @(item.IsActive ? "active" : null) @(item.IsDisabled ? "disabled" : null)" @onclick="() => OnSelectedPage(item, Parameters.PageSize)"><span class="page-link" style="cursor: pointer">@item.PageText</span></li>
         }
-        <li class="page-item @(CurrentPage == TotalPages ? "disabled" : null)" @onclick="() => OnSelectedPage(CurrentPage + 1)"><span class="page-link" style="cursor: pointer">Næste</span></li>
     </ul>
     <ul class="pagination">
         <li class="page-item">
-            <select class="form-select-sm h-100">
+            <InputSelect Value="Parameters.PageSize" ValueExpression="@(()=>Parameters.PageSize)" ValueChanged="(int size) => OnSelectedPage(currentLink, size)" class="form-select-sm h-100">
                 <option value="10">10</option>
                 <option value="50">50</option>
                 <option value="100">100</option>
-            </select>
+            </InputSelect>
         </li>
     </ul>
 </nav>

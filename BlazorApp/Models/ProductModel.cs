@@ -18,7 +18,7 @@ namespace BlazorApp.Models
         [Required]
         public double? Price { get; set; }
         [Required]
-        public bool? Disabled { get; set; } = false;
+        public bool Disabled { get; set; } = false;
         public string? Image { get; set; }
         [Required]
         public int? ManufacturerId { get; set; }
