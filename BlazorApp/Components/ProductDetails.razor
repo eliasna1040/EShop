@@ -1,0 +1,15 @@
+﻿@using BlazorApp.Models;
+
+@if (Product != null)
+{
+    <img height="175" src="@(Product.Image != null ? $"data:image/png;base64, {Product.Image}" : "/Images/image-not-found-icon.svg")" class="card-img-top p-4">
+    <p>@Product.Name</p>
+    <p>@Product.Description</p>
+    <p>@Product.Price</p>
+    <p>@Product.Category.Name</p>
+    <p>@Product.Manufacturer.Name</p>
+}
+
+@code {
+    [Parameter] public ProductModel Product { get; set; }
+}

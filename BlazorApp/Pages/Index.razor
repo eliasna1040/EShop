@@ -2,6 +2,7 @@
 @using BlazorApp.Components;
 @using BlazorApp.Models;
 @inject HttpClient client
+@inject IModalService modal
 
 <PageTitle>Index</PageTitle>
 
@@ -38,7 +39,7 @@
                         <h5 class="card-title text-center mb-3">@product.Name</h5>
                         <div class="d-flex justify-content-between">
                             <p class="card-text">@product.Price?.ToString("C2")</p>
-                            <a href="#" class="btn btn-primary">Køb</a>
+                            <button class="btn btn-primary" @onclick='() => modal.Show<ProductDetails>("Detaljer", new ModalParameters().Add(nameof(ProductDetails.Product), product))'>Preview</button>
                         </div>
                     </div>
                 </div>
